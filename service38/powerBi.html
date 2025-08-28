@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Power BI ESG Dashboard</title>
+  <script src="https://cdn.powerbi.com/libs/powerbi-client/2.18.5/powerbi.min.js"></script>
+</head>
+<body>
+  <h2>Power BI - ESG Dashboard</h2>
+  <div id="reportContainer" style="height:600px; width:100%; border: 1px solid #ccc;"></div>
+
+  <script>
+    const embedConfiguration = {
+      type: 'report',
+      id: 'your_report_id', // Replace this with the actual Report ID
+      embedUrl: 'https://app.powerbi.com/reportEmbed?reportId=your_report_id&groupId=your_group_id',
+      accessToken: 'your_access_token', // Replace with a valid Embed Token
+      tokenType: powerbi.models.TokenType.Embed,
+      settings: {
+        filterPaneEnabled: true,
+        navContentPaneEnabled: true
+      }
+    };
+
+    const reportContainer = document.getElementById("reportContainer");
+    const report = powerbi.embed(reportContainer, embedConfiguration);
+
+    report.on("loaded", function () {
+      console.log("Power BI Report successfully loaded.");
+    });
+
+    report.on("error", function (event) {
+      console.error("Power BI Embed Error:", event.detail);
+    });
+  </script>
+</body>
+</html>

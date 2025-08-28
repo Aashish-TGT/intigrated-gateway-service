@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-gray-100 text-gray-800;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+}
+
+a {
+    @apply text-blue-600 hover:text-blue-800;
+}
+
+button {
+    @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded;
+}
+
+input, textarea {
+    @apply border border-gray-300 rounded-md p-2;
+}
+
+input:focus, textarea:focus {
+    @apply border-blue-500 outline-none;
+}
+
+.template-preview {
+    @apply border border-gray-300 p-4 rounded-lg shadow-md;
+}
+
+.logo-uploader {
+    @apply mb-4;
+}
+
+.color-picker {
+    @apply mb-4;
+}
+
+.font-selector {
+    @apply mb-4;
+}
+
+.footer-editor {
+    @apply mb-4;
+}
+
+.legal-notes-editor {
+    @apply mb-4;
+}

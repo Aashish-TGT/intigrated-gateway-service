@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: Developer Portal API
+  description: API Documentation and Testing
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /get-sandbox-key:
+    post:
+      summary: Get a Sandbox API Key
+      responses:
+        '200':
+          description: Returns a sandbox API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiKey:
+                    type: string
+
+  /sample-api:
+    get:
+      summary: Sample API (Sandbox/Test)
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sample response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string

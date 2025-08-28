@@ -1,0 +1,14 @@
+{
+  "digital_documents": {
+    "esg_category": "Environmental",
+    "sdg_goals": [12, 13]
+  },
+  "employee_training": {
+    "esg_category": "Social",
+    "sdg_goals": [4, 5]
+  },
+  "audit_compliance": {
+    "esg_category": "Governance",
+    "sdg_goals": [16]
+  }
+}

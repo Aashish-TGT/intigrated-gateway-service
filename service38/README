@@ -1,0 +1,129 @@
+
+
+# 🌱 Sustainability & ESG Compliance Dashboard
+
+A Node.js-based backend dashboard for businesses to track their sustainability efforts, ESG footprint, and SDG compliance with downloadable PDF/Excel reports and Power BI/Grafana visualizations.
+
+---
+
+## 📌 Purpose
+
+To give B2B companies, banks, and government clients visibility into:
+- CO₂ reductions
+- Paper and tree savings
+- ESG scores (Environmental, Social, Governance)
+- UN SDG (Sustainable Development Goals) alignment
+
+---
+
+## ⚙️ Tech Stack
+
+- **Backend**: Node.js, Express.js, MongoDB
+- **Visualization**: Power BI, Grafana
+- **Reports**: PDF (Puppeteer), Excel (ExcelJS)
+- **Auth**: ❌ None (Open for internal dashboard use)
+- **ESG Mapping**: Configurable via `esg-mapping.json`
+
+---
+
+## 📁 Folder Structure
+
+sustainability-dashboard/
+├── backend/
+│ ├── controllers/
+│ ├── routes/
+│ ├── services/
+│ ├── utils/
+│ ├── esg-mapping.json
+│ └── app.js
+│ |__ db.js
+|
+├── dashboard/
+│ ├── grafana-config/
+│ └── power-bi/
+│
+├── reports/
+│ └── templates/
+│
+├── .env
+├── .gitignore
+├── LICENSE
+└── README.md
+
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/sumit-TGT/sustainability-dashboard.git
+cd sustainability-dashboard
+
+2. Install dependencies
+
+cd backend
+npm install
+
+3.  Configure environment variables
+Create a .env file inside /backend:
+
+PORT=3000
+DB_URI=mongodb://localhost:27017/esg-dashboard
+POWER_BI_WORKSPACE_ID=your_workspace_id
+POWER_BI_REPORT_ID=your_report_id
+POWER_BI_EMBED_URL=https://app.powerbi.com/reportEmbed?reportId=your_report_id&groupId=your_group_id
+POWER_BI_ACCESS_TOKEN=your_access_token
+
+
+4. Start the backend server
+node app.js
+
+🧪 API Endpoints
+
+| Method | Endpoint                      | Description                  |
+| ------ | ----------------------------- | ---------------------------- |
+| `POST` | `/api/v1/esg/upload`          | Upload ESG data              |
+| `GET`  | `/api/v1/esg/:tenantId`       | Get ESG data by tenant       |
+| `GET`  | `/api/v1/esg/:tenantId/pdf`   | Download ESG report as PDF   |
+| `GET`  | `/api/v1/esg/:tenantId/excel` | Download ESG report as Excel |
+| `GET`  | `/api/v1/mapping`             | Get ESG → SDG mapping data   |
+
+
+📊 Dashboards
+Power BI
+
+Embed HTML file in dashboard/power-bi/index.html
+
+Set report ID, embed URL, and access token from .env
+
+Grafana
+
+Use .json dashboards inside dashboard/grafana-config/
+
+Configure Grafana to use MongoDB or InfluxDB (via proxy if needed)
+
+
+📦 Sample ESG Mapping File
+
+{
+  "digital_documents": {
+    "esg_category": "Environmental",
+    "sdg_goals": [12, 13]
+  },
+  "employee_training": {
+    "esg_category": "Social",
+    "sdg_goals": [4, 5]
+  },
+  "audit_compliance": {
+    "esg_category": "Governance",
+    "sdg_goals": [16]
+  }
+}
+
+📄 License
+This project is licensed under the MIT License.
+
+👨‍💻 Author
+Sumit Kumar
+[Terra Grid Tech] @Intern

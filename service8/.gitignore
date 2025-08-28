@@ -1,0 +1,18 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# dotenv environment variable file
+.env
+
+# Exported files
+exports/*.csv
+exports/*.pdf
+
+# OS-specific files
+.DS_Store
+Thumbs.db

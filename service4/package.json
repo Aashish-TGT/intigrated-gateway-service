@@ -1,0 +1,30 @@
+
+{
+  "name": "analytics-service",
+  "version": "1.0.0",
+  "description": "Microservices 8 - Analytics Service",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Sumit Kumar",
+  "license": "MIT",
+  "keywords": [
+    "analytics",
+    "logging",
+    "microservice",
+    "nodejs",
+    "cosmosdb",
+    "azure"
+  ],
+  "dependencies": {
+    "@azure/cosmos": "^4.4.1",
+    "applicationinsights": "^3.7.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}

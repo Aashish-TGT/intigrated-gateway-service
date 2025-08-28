@@ -1,0 +1,29 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Sustainability Dashboard",
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "gauge",
+        "title": "CO₂ Saved (kg)",
+        "targets": [{ "expr": "co2_saved" }],
+        "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 }
+      },
+      {
+        "type": "gauge",
+        "title": "Paper Saved (pages)",
+        "targets": [{ "expr": "paper_saved" }],
+        "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 }
+      },
+      {
+        "type": "gauge",
+        "title": "Trees Saved",
+        "targets": [{ "expr": "trees_saved" }],
+        "gridPos": { "x": 0, "y": 4, "w": 12, "h": 4 }
+      }
+    ],
+    "schemaVersion": 36,
+    "version": 1
+  }
+}

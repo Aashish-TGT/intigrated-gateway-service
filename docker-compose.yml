@@ -1,0 +1,240 @@
+services:
+  service1:
+    build: ./service1
+    expose:
+      - "5000"
+
+  service2:
+    build: ./service2
+    expose:
+      - "5000"
+
+  service3:
+    build: ./service3
+    expose:
+      - "5000"
+
+  service4:
+    build: ./service4
+    expose:
+      - "5000"
+
+  service5:
+    build: ./service5
+    expose:
+      - "5000"
+
+  service6:
+    build: ./service6
+    expose:
+      - "5000"
+
+  service7:
+    build: ./service7
+    expose:
+      - "5000"
+
+  service8:
+    build: ./service8
+    expose:
+      - "5000"
+
+  service9:
+    build: ./service9
+    expose:
+      - "5000"
+
+  service10:
+    build: ./service10
+    expose:
+      - "5000"
+
+  service11:
+    build: ./service11
+    expose:
+      - "5000"
+
+  service12:
+    build: ./service12
+    expose:
+      - "5000"
+
+  service13:
+    build: ./service13
+    expose:
+      - "5000"
+
+  service14:
+    build: ./service14
+    expose:
+      - "5000"
+
+  service15:
+    build: ./service15
+    expose:
+      - "5000"
+
+  service16:
+    build: ./service16
+    expose:
+      - "5000"
+
+  service17:
+    build: ./service17
+    expose:
+      - "5000"
+
+  service18:
+    build: ./service18
+    expose:
+      - "5000"
+
+  service19:
+    build: ./service19
+    expose:
+      - "5000"
+
+  service20:
+    build: ./service20
+    expose:
+      - "5000"
+
+  service21:
+    build: ./service21
+    expose:
+      - "5000"
+
+  service22:
+    build: ./service22
+    expose:
+      - "5000"
+
+  service23:
+    build: ./service23
+    expose:
+      - "5000"
+
+  service24:
+    build: ./service24
+    expose:
+      - "5000"
+
+  service25:
+    build: ./service25
+    expose:
+      - "5000"
+
+  service26:
+    build: ./service26
+    expose:
+      - "5000"
+
+  service27:
+    build: ./service27
+    expose:
+      - "5000"
+
+  service28:
+    build: ./service28
+    expose:
+      - "5000"
+
+  service29:
+    build: ./service29
+    expose:
+      - "5000"
+
+  service30:
+    build: ./service30
+    expose:
+      - "5000"
+
+  service31:
+    build: ./service31
+    expose:
+      - "5000"
+
+  service32:
+    build: ./service32
+    expose:
+      - "5000"
+
+  service33:
+    build: ./service33
+    expose:
+      - "5000"
+
+  service34:
+    build: ./service34
+    expose:
+      - "5000"
+
+  service35:
+    build: ./service35
+    expose:
+      - "5000"
+
+  service36:
+    build: ./service36
+    expose:
+      - "5000"
+
+  service37:
+    build: ./service37
+    expose:
+      - "5000"
+
+  service38:
+    build: ./service38
+    expose:
+      - "5000"
+
+  service39:
+    build: ./service39
+    expose:
+      - "5000"
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service1
+      - service2
+      - service3
+      - service4
+      - service5
+      - service6
+      - service7
+      - service8
+      - service9
+      - service10
+      - service11
+      - service12
+      - service13
+      - service14
+      - service15
+      - service16
+      - service17
+      - service18
+      - service19
+      - service20
+      - service21
+      - service22
+      - service23
+      - service24
+      - service25
+      - service26
+      - service27
+      - service28
+      - service29
+      - service30
+      - service31
+      - service32
+      - service33
+      - service34
+      - service35
+      - service36
+      - service37
+      - service38
+      - service39

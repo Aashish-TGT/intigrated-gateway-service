@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+
+# Uploaded PDFs
+uploads/
+
+# Compressed output files
+optimized/
+
+# Environment secrets
+.env
+
+# Logs and cache
+*.log

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "12345",
+    "merchant": "Smart Store",
+    "items": [
+      { "name": "Bread", "price": 40 },
+      { "name": "Milk", "price": 30 }
+    ],
+    "total": 70,
+    "currency": "INR",
+    "tax": 5,
+    "discount": 10,
+    "paymentMethod": "UPI",
+    "transactionId": "TXN1234567890",
+    "customerId": "user001",
+    "date": "2025-07-21T10:00:00Z"
+  }
+]

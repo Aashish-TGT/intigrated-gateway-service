@@ -1,0 +1,32 @@
+http:
+  port: 8080
+
+apiEndpoints:
+  receipt_v1:
+    path: /v1/receipt
+    method: POST
+    rateLimit:
+      windowMs: 60000  # 1 minute
+      limit: 5         # max 5 requests per IP per minute
+
+serviceEndpoints:
+  receiptService:
+    url: 'http://localhost:5000' 
+
+policies:
+  - rate-limit
+  - proxy
+
+pipelines:
+  default:
+    apiEndpoints:
+      - receipt_v1
+    policies:
+      - rate-limit:
+          - action:
+              rateLimitBy: ip
+              limit: 5
+              windowMs: 60000
+      - proxy:
+          - action:
+              serviceEndpoint: receiptService

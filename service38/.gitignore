@@ -1,0 +1,28 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# IDEs & editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# PDF/Excel report outputs (optional)
+*.pdf
+*.xlsx
+
+# Build artifacts (if any in future)
+dist/
+coverage/

@@ -1,0 +1,36 @@
+<receipts>
+  <receipt>
+    <receiptId>RCP001</receiptId>
+    <date>2025-07-18</date>
+    <clientId>CL123</clientId>
+    <amount>1500.00</amount>
+    <paymentMethod>Credit Card</paymentMethod>
+    <items>
+      <item>
+        <name>Shirt</name>
+        <quantity>2</quantity>
+        <price>500.00</price>
+      </item>
+      <item>
+        <name>Trousers</name>
+        <quantity>1</quantity>
+        <price>500.00</price>
+      </item>
+    </items>
+  </receipt>
+
+  <receipt>
+    <receiptId>RCP002</receiptId>
+    <date>2025-07-19</date>
+    <clientId>CL124</clientId>
+    <amount>2000.00</amount>
+    <paymentMethod>Cash</paymentMethod>
+    <items>
+      <item>
+        <name>Watch</name>
+        <quantity>1</quantity>
+        <price>2000.00</price>
+      </item>
+    </items>
+  </receipt>
+</receipts>

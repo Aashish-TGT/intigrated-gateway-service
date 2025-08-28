@@ -1,0 +1,38 @@
+[
+  {
+    "userId": "user123",
+    "receiptId": "receipt789",
+    "thirdParty": "HDFC Bank",
+    "purpose": "Loan",
+    "expiry": "2025-08-01",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyMTIzIiwicmVjZWlwdElkIjoicmVjZWlwdDc4OSIsInRoaXJkUGFydHkiOiJIREZDIEJhbmsiLCJwdXJwb3NlIjoiTG9hbiIsImV4cGlyeSI6IjIwMjUtMDgtMDEiLCJpYXQiOjE3NTMxMDI0ODQsImV4cCI6MTc1NTY5NDQ4NH0.fLumENZLxIWOM5QBBgZNi5ElL46f4gg9cQpDAYVEu4o",
+    "timestamp": "2025-07-21T12:54:44.700Z"
+  },
+  {
+    "userId": "535353",
+    "receiptId": "353535",
+    "thirdParty": "sbi",
+    "purpose": "home",
+    "expiry": "2025-07-31",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MzUzNTMiLCJyZWNlaXB0SWQiOiIzNTM1MzUiLCJ0aGlyZFBhcnR5Ijoic2JpIiwicHVycG9zZSI6ImhvbWUiLCJleHBpcnkiOiIyMDI1LTA3LTMxIiwiaWF0IjoxNzUzMTA0NDE1LCJleHAiOjE3NTU2OTY0MTV9.C5IqAVvlqkriKuR2Q7SFDZ3vQwxz5qLtlcGwaJXge1Q",
+    "timestamp": "2025-07-21T13:26:55.058Z"
+  },
+  {
+    "userId": "535353",
+    "receiptId": "353535",
+    "thirdParty": "sbi",
+    "purpose": "home",
+    "expiry": "2025-07-31",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MzUzNTMiLCJyZWNlaXB0SWQiOiIzNTM1MzUiLCJ0aGlyZFBhcnR5Ijoic2JpIiwicHVycG9zZSI6ImhvbWUiLCJleHBpcnkiOiIyMDI1LTA3LTMxIiwiaWF0IjoxNzUzMTA0NDQzLCJleHAiOjE3NTU2OTY0NDN9.T7uiKCiS8RRizunfeouPTviR92ew2QyAuTaJoFjnWO8",
+    "timestamp": "2025-07-21T13:27:23.346Z"
+  },
+  {
+    "userId": "535353",
+    "receiptId": "353535",
+    "thirdParty": "sbi",
+    "purpose": "home",
+    "expiry": "2025-07-31",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1MzUzNTMiLCJyZWNlaXB0SWQiOiIzNTM1MzUiLCJ0aGlyZFBhcnR5Ijoic2JpIiwicHVycG9zZSI6ImhvbWUiLCJleHBpcnkiOiIyMDI1LTA3LTMxIiwiaWF0IjoxNzUzMTA0NDQ1LCJleHAiOjE3NTU2OTY0NDV9.O47qoHcOH84dyKNaFTn7VsLce5eK0anbVFHWFPOu5GM",
+    "timestamp": "2025-07-21T13:27:25.393Z"
+  }
+]

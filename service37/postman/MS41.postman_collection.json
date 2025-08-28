@@ -1,0 +1,31 @@
+{
+  "info": { "name": "MS41 Voice Assistant", "_postman_id": "ms41-collection", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{base}}/health" } },
+    { "name": "Help", "request": { "method": "GET", "url": "{{base}}/voice/help" } },
+    { "name": "Voice Query", "request": {
+      "method": "POST",
+      "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+      "url": "{{base}}/voice/query",
+      "body": { "mode": "formdata", "formdata": [{ "key": "audio", "type": "file", "src": "" }] }
+    }},
+    { "name": "Speak (TTS)", "request": {
+      "method": "POST",
+      "header": [
+        { "key": "Authorization", "value": "Bearer {{jwt}}" },
+        { "key": "Content-Type", "value": "application/json" }
+      ],
+      "url": "{{base}}/voice/speak",
+      "body": { "mode": "raw", "raw": "{ \"text\": \"You have 3 receipts in May.\" }" }
+    }},
+    { "name": "Search (Text)", "request": {
+      "method": "GET",
+      "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+      "url": { "raw": "{{base}}/receipts/search?query=coffee from may", "host": ["{{base}}"], "path": ["receipts","search"], "query": [{"key":"query","value":"coffee from may"}] }
+    }}
+  ],
+  "variable": [
+    { "key": "base", "value": "http://localhost:8086" },
+    { "key": "jwt", "value": "" }
+  ]
+}

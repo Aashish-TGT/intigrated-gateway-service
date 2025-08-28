@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Receipt View</title>
+  <style>
+    .offer-box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px dashed #333;
+      background-color: #f9f9f9;
+    }
+    .cta-button {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧾 Receipt Details</h1>
+  <!-- You can display receipt data here -->
+
+  <% if (offer) { %>
+    <div class="offer-box">
+      <p><strong>🔥 Offer:</strong> <%= offer.bannerText %></p>
+      <!-- Form to track click -->
+      <form method="POST" action="/offer/click/<%= offer.receiptId %>">
+        <button class="cta-button">Claim Offer</button>
+      </form>
+    </div>
+  <% } else { %>
+    <p>No offers available for this receipt.</p>
+  <% } %>
+</body>
+</html>

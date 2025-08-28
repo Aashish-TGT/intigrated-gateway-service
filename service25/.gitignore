@@ -1,0 +1,13 @@
+# Node modules (don't push this folder)
+node_modules/
+
+# dotenv file (contains secrets like DB URI)
+.env
+
+# Logs
+logs
+*.log
+
+# IDE config
+.vscode/
+.DS_Store

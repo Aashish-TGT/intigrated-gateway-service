@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EV Transaction Dashboard</title>
+</head>
+<body>
+  <h2>EV Transactions</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Device</th><th>Amount</th><th>Mileage</th><th>Unit</th><th>Meter</th><th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="txnBody"></tbody>
+  </table>
+  <script>
+    const ws = new WebSocket("ws://" + location.host);
+    ws.onmessage = (msg) => {
+      const { type, data } = JSON.parse(msg.data);
+      if (type === "new-transaction") {
+        const row = `<tr>
+          <td>${data.deviceId}</td><td>${data.amount}</td><td>${data.mileage}</td>
+          <td>${data.unit}</td><td>${data.meter}</td><td>${new Date(data.createdAt).toLocaleString()}</td>
+        </tr>`;
+        document.getElementById("txnBody").innerHTML = row + document.getElementById("txnBody").innerHTML;
+      }
+    };
+  </script>
+</body>
+</html>

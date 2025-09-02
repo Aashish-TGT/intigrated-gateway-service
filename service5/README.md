@@ -1,155 +1,127 @@
-# 🧾 POS Admin Panel Backend
+# QR URL Microservice
 
-This is a Node.js-based backend service for an Admin Panel used in a Point of Sale (POS) system. It enables retail admins to manage clients, monitor digital receipts, track subscription usage, view dues, and handle POS terminal data securely.
-
----
-
-## 🚀 Tech Stack
-
-- **Backend**: Node.js + Express.js
-- **Database**: MySQL (via Sequelize ORM)
-- **Authentication**: JWT (JSON Web Token)
-- **Security**: dotenv for environment variables, bcrypt for password hashing
-- **Dev Tools**: nodemon for auto-reloading
+A lightweight microservice to generate QR codes for receipts, create short URLs, redirect users, and track link statistics. Built with **Node.js**, **Express**, and **ESM modules**.
 
 ---
 
-## 📁 Project Structure
+## Features
 
-```
-admin-panel-service/
-│
-├── config/
-│   └── db.js               # Sequelize MySQL DB connection
-│
-├── middlewares/
-│   └── auth.js             # JWT auth middleware
-│
-├── models/
-│   ├── Admin.js            # Admin model
-│   ├── Client.js           # Client model
-│   └── Receipt.js          # Receipt model, with client association
-│
+- Generate QR codes (PNG or SVG) for receipts.
+- Create short URLs for receipts with optional expiration.
+- Redirect users from short URL to the original receipt URL.
+- Track link statistics:
+  - Scan count
+  - Last scanned timestamp
+  - Expiration date
+- In-memory storage (can be extended to DB)
+- Configurable via `.env`
+
+---
+
+## Folder Structure
+
+qr-url-service/
+│── server.js
+│── package.json
+│── .env
+│── config/
+│ └── index.js
+└── src/
 ├── routes/
-│   ├── adminRoutes.js      # Admin registration and login
-│   └── clientRoutes.js     # Client data, usage, and receipts
-│
-├── .env                    # Environment config (e.g. DB credentials, JWT secret)
-├── app.js                  # Entry point of the application
-├── package.json            # Project metadata and dependencies
-└── README.md               # Project documentation (this file)
-```
+│ └── qrRoutes.js
+├── controllers/
+│ └── qrController.js
+├── services/
+│ └── qrService.js
+└── store/
+└── memoryStore.js
+
 
 ---
 
-## 🔐 Environment Variables (.env)
-
-```env
-PORT=5009
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=@A18tauru123
-DB_NAME=admin_panel_db
-JWT_SECRET=adminSecretKey
-```
-
----
-
-## 🔧 Installation & Setup
-
-1. **Clone the repo:**
+## Installation
 
 ```bash
-git clone https://github.com/your-org/admin-panel-service.git
-cd admin-panel-service
-```
-
-2. **Install dependencies:**
-
-```bash
+git clone <repo-url>
+cd qr-url-service
 npm install
-```
 
-3. **Configure environment variables:**
+Configuration
 
-Edit `.env` file with your DB credentials.
+Create a .env file in the project root:
+PORT=3000
+BASE_URL=http://localhost:3000
+RECEIPT_BASE_URL=http://localhost:3000/receipts
 
-4. **Start MySQL and create the database manually (if not already created):**
+PORT – server listening port (default: 3000)
 
-```sql
-CREATE DATABASE admin_panel_db;
-```
+BASE_URL – base URL for short links
 
-5. **Run the app:**
+RECEIPT_BASE_URL – base URL for receipt links
 
-```bash
-npm run dev     # for development (with nodemon)
-npm start       # for production
-```
+Running the Service
+npm run dev   # For development with nodemon
+npm start     # For production
 
----
+API Endpoints
+1. Generate QR Link
 
-## 📦 API Endpoints
+POST /generate
 
-### 🔐 Admin Authentication
+Request Body:
+{
+  "receiptId": "12345",
+  "expiresIn": "1h",  // optional, format: s, m, h, d
+  "format": "png"      // optional, png or svg
+}
 
-| Method | Route             | Description            |
-|--------|------------------|------------------------|
-| POST   | `/api/admin/register` | Register new admin |
-| POST   | `/api/admin/login`    | Admin login, returns JWT |
+Response:
+{
+  "shortUrl": "http://localhost:4000/r/abcd1234",
+  "qrCode": "data:image/png;base64,...",
+  "expiresAt": "2025-08-31T15:30:00.000Z",
+  "token": "abcd1234"
+}
+2. Redirect via Token
 
----
+GET /r/:token
 
-### 👤 Client Management (JWT Protected)
+Redirects to the actual receipt URL.
 
-Add header:  
-`Authorization: Bearer <your_token>`
+Returns 404 if token is invalid.
 
-| Method | Route                         | Description                          |
-|--------|------------------------------|--------------------------------------|
-| GET    | `/api/clients`               | Get all clients                      |
-| GET    | `/api/clients/:id/usage`     | Get subscription + dues info         |
-| GET    | `/api/clients/:id/receipts`  | Get all receipts for a client        |
-| POST   | `/api/clients/:id/receipts`  | Add new receipt + increment usage    |
+Returns 410 if token is expired.
 
----
+2. Redirect via Token
 
-## 🧪 Dummy Data
+GET /r/:token
 
-- A default test client is created on first run:
-  - **Email**: `test@example.com`
-  - **Name**: `Test Client`
-  - **Subscription Limit**: `10`
+Redirects to the actual receipt URL.
 
----
+Returns 404 if token is invalid.
 
-## 📌 Features
+Returns 410 if token is expired.
 
-- Admin user registration and JWT login
-- Secure client listing and filtering
-- Client receipt printing and POS source tracking
-- Automatic subscription usage counting
-- Real-time due amount and receipt history view
+Response:
+{
+  "token": "abcd1234",
+  "targetUrl": "http://localhost:4000/receipts/12345",
+  "scanCount": 3,
+  "lastScannedAt": "2025-08-31T15:25:00.000Z",
+  "expiresAt": "2025-08-31T15:30:00.000Z"
+}
 
----
+Notes
 
-## 🧰 Future Enhancements (Suggestions)
+Currently uses in-memory storage. Restarting the server will reset all data.
 
-- Admin dashboard UI (React-based frontend)
-- Export reports to PDF/Excel
-- Filter receipts by date range
-- Add POS terminal source metadata
-- Email notifications for dues
+You can integrate MongoDB or another database for persistence.
 
----
+Supports PNG and SVG QR code formats.
 
-## 👨‍💻 Author
+LICENSE:
+MIT
 
-Made with ❤️ by **Aashish**  
-Intern @ TGT by TerraGrid Tech
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more info.
+Author
+Sumit Kumar
+[@Intern TGT ]

@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Expose port (default: 3000)
-EXPOSE 3000
+EXPOSE 5000
 
 # Start service
-CMD ["node", "app.js"]
+CMD ["node", "server.js"]

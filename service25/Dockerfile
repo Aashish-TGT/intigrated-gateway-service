@@ -1,5 +1,5 @@
 # Base image
-FROM node:18
+FROM node:18-alpine
 
 # Working directory
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Start service
-CMD ["npm", "start"]
+CMD ["node", "index.js"]

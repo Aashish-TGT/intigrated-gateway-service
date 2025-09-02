@@ -1,113 +1,92 @@
-# 📄 MS-20: Receipt Viewer Service
+# 📮 Feedback & Issue Reporting Microservice
 
-This microservice is responsible for **securely displaying digital receipts (PDF format)** and collecting feedback or issue reports from users. It fetches PDFs from **Azure Blob Storage** and renders them via a browser.
+A lightweight and secure microservice to collect feedback and issue reports from users or admins. Built with Node.js, Express, MongoDB, and JWT authentication.
 
 ---
 
 ## 🚀 Features
 
-- 🔐 Secure access to receipt PDFs via SAS tokens
-- 📄 In-browser receipt viewer (iframe)
-- 📝 Feedback/issue reporting form below each receipt
-- 🗂 Issues are logged to a file (`logs/issue_reports.txt`)
-- 📦 Cleanly separated in controllers, routes, views, and utils
+- 🧾 Submit feedback with categories like `bug`, `UI`, `feature request`
+- 🔐 JWT authentication required to submit feedback
+- 📦 MongoDB for storing all feedback data
+- 🧠 Spam filter & email auto-response logic (optional/future ready)
+- 📋 Admin can retrieve all submitted feedback
+- 🛡️ Secure API endpoints with middleware
 
 ---
 
-## 📁 Project Structure
+## 🧰 Tech Stack
 
-ms20-receipt-viewer/
-├── app.js
-├── .env
-├── controllers/
-├── routes/
-├── utils/
-├── views/
-├── public/
-├── logs/ (auto-created on form submission)
-└── README.md
+- **Node.js**
+- **Express.js**
+- **MongoDB (Mongoose)**
+- **JWT (jsonwebtoken)**
+- *(Email functionality is disabled by default)*
+
+---
+
+## 📁 Folder Structure
+
+microservices-16/
+├── controllers/ # Business logic
+│ └── feedbackController.js
+├── models/ # Mongoose schema
+│ └── Feedback.js
+├── routes/ # API routing
+│ └── feedbackRoutes.js
+├── middleware/ # Auth middleware
+│ └── authMiddleware.js
+├── utils/ # Optional utilities (e.g., mailer)
+├── .env # Environment variables
+├── .gitignore
+├── index.js # App entry point
+└── package.json
+
 
 
 ---
 
-## 🔧 Tech Stack
+## 🔐 Generate a JWT Token
 
-- **Node.js + Express.js**
-- **EJS** for server-side rendering
-- **Azure Blob Storage SDK**
-- **Tailored CSS** for layout
-- **Environment variables (.env)** for secure config
+For testing protected routes, generate a token:
 
----
+```js
+const jwt = require("jsonwebtoken");
+const token = jwt.sign(
+  { userId: "1234", role: "user" },
+  "feedback_api_secret_786",
+  { expiresIn: "1h" }
+);
+console.log(token);
+📬 Sample API Request (Postman)
+🔸 URL:
+POST http://localhost:3000/api/feedback
 
-## 🌐 How It Works
+🔸 Headers:
 
-1. User visits `/receipt/:receiptId`
-2. PDF is fetched securely from Azure Blob using SAS token
-3. PDF is rendered inside an iframe
-4. User can submit an issue using the form
-5. Feedback is saved in `logs/issue_reports.txt`
+Content-Type: application/json
+Authorization: Bearer <your_token>
 
----
+🔸 Body (raw JSON):
 
-## ⚙️ Setup Instructions
+{
+  "name": "Manjeet",
+  "email": "manjeet@example.com",
+  "category": "bug",
+  "message": "Login page crashing on submit"
+}
+🧪 Run the Server
 
-### 1. Clone the Repo
-
-```bash
-git clone https://github.com/your-org/ms20-receipt-viewer.git
-cd ms20-receipt-viewer
-
-Install Dependencies
 npm install
+npm start
+MongoDB should be running locally at mongodb://localhost:27017/feedbackdb.
 
-Configure .env File
-AZURE_STORAGE_ACCOUNT_NAME=your_account_name
-AZURE_STORAGE_ACCOUNT_KEY=your_account_key
-AZURE_CONTAINER_NAME=your_container_name
+🧑‍💻 Developer
+Name: Manish Kumari-TGT
 
-Start the Server
-node app.js
+Project: Feedback API Microservice
 
-Visit:
-http://localhost:3000/receipt/<receiptId>
-For example:
-http://localhost:3000/receipt/sample-receipt
+Purpose: Collect feedback from users securely for any web app
 
-Format:
-Receipt ID: demo123
-Issue: This receipt has wrong amount
-Time: 2025-07-13T02:10:00Z
-
-🔐 Azure Blob Integration
-Azure Blob SDK is used to generate secure SAS URLs:
-
-@azure/storage-blob library used
-
-Only read permission is granted
-
-SAS token expires after 1 hour
-
-➡️ Code used in utils/azureBlob.js
-generateBlobSASQueryParameters({
-  containerName,
-  blobName,
-  permissions: BlobSASPermissions.parse("r"),
-  startsOn: now,
-  expiresOn: expiry,
-}, sharedKeyCredential)
-
-📦 Deployment Notes
-App is portable and can run on any Node.js server
-Can be deployed behind a reverse proxy (e.g., NGINX)
-Can integrate with Admin Panel (MS-6) using:
-Link: target="_blank"
-or iframe embed
-👨‍💻 Author
-Developed by [Aashish]
-intern in Tgt's
-For: Digital Receipts Platform (Microservices Architecture)
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more info.
+🪪 License
+This project is licensed under the MIT License.

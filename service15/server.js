@@ -1,14 +1,18 @@
-require('dotenv').config(); // Load environment variables
 const express = require('express');
-const connectDB = require('./config/db'); // MongoDB connection
-const authRoutes = require('./routes/authRoutes'); // Auth routes
+const os = require('os');
 
 const app = express();
-app.use(express.json()); // Enable JSON body parsing
+const port = 3000;
 
-connectDB(); // Connect to MongoDB
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'UP',
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    loadAverage: os.loadavg(),
+  });
+});
 
-app.use('/api', authRoutes); // Use routes with /api prefix
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`✅ Health check running at http://localhost:${port}/health`);
+});

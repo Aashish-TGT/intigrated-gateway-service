@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Expose port (default: 3000)
-EXPOSE 3000
+EXPOSE 5000
 
 # Start service
-CMD ["npm", "server"]
+CMD ["npm", "index.js"]

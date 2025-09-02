@@ -1,16 +1,14 @@
-const express = require("express");
-require("dotenv").config();
+require('dotenv').config(); // Load environment variables
+const express = require('express');
+const connectDB = require('./config/db'); // MongoDB connection
+const authRoutes = require('./routes/authRoutes'); // Auth routes
+
 const app = express();
+app.use(express.json()); // Enable JSON body parsing
 
-app.use(express.json());
+connectDB(); // Connect to MongoDB
 
-const mobileRoutes = require('./routes/mobile');
-app.use('/mobile', mobileRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Welcome to the server!");
-});
+app.use('/api', authRoutes); // Use routes with /api prefix
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Mobile Gateway running on ${PORT}`));
-
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

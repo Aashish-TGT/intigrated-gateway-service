@@ -1,105 +1,100 @@
-# 🧩 User Onboarding Microservice
+# 🩺 Health & Monitoring Service
 
-A lightweight Node.js microservice to register businesses after POS plugin installation.  
-It handles user registration, email verification, and generates a secure tenant ID and API key.
-
----
-
-## 🚀 Features
-
-- ✅ Register new businesses
-- ✅ Email verification using token
-- ✅ Unique Tenant ID generation
-- ✅ Secure API key generation
-- ✅ MongoDB-backed storage
+This service monitors the health of microservices by exposing a heartbeat API and visualizing metrics using Prometheus and Grafana. Ideal for DevOps teams to track uptime, memory usage, and CPU load in real-time.
 
 ---
 
-## 🧱 Folder Structure
+## 📌 Purpose
 
-microservices19/
-├── config/ # MongoDB connection setup
-│ └── db.js
-├── controllers/ # Business logic for registration and verification
-│ └── authController.js
-├── models/ # Mongoose schemas
-│ ├── Business.js
-│ └── EmailToken.js
-├── routes/ # API route definitions
-│ └── authRoutes.js
-├── utils/ # Utility functions (API key, Tenant ID generator)
-│ ├── generateApiKey.js
-│ └── generateTenantId.js
-├── .env.example # Sample environment config (excluded: .env)
-├── .gitignore # Prevents uploading of node_modules and .env
-├── LICENSE # MIT License
-├── README.md # You're reading it!
-└── server.js # Main entry point
+- Tracks **uptime**, **memory usage**, and **error rates** of services
+- Helps detect outages early through **alert triggers**
+- Provides a **dashboard view** of system performance
+
+---
+
+## 🧰 Tech Stack
+
+- **Node.js** – for exposing `/health` endpoint
+- **Prometheus** – for metrics scraping and storage
+- **Grafana** – for visual dashboards and alerting
+- **Docker Compose** – to manage services
+- **Azure Monitor (optional)** – for production-level alerting
+
+---
+
+## 🗂️ Project Structure
+
+health-src/
+├── health-monitoring/
+│   └── server.js
+├── prometheus.yml
+├── docker-compose.yml
+├── README.md
+├── LICENSE
+└── .gitignore
+
+
 
 
 ---
 
-## 📦 Tech Stack
+## ⚙️ Setup Instructions
 
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB, Mongoose
-- **Tools:** dotenv, crypto, uuid
+### 1️⃣ Run Node.js Health Service
 
----
-
-## ⚙️ Environment Setup
-
-1. Create a `.env` file in the root:
-
-```ini
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/onboardingdb
-BASE_URL=http://localhost:3000
-Install dependencies:
-
-npm install
-Start MongoDB service (Windows):
-
-net start MongoDB
-Run the server:
+```bash
+cd health-monitoring
+npm init -y
+npm install express
 node server.js
-You should see:
 
-✅ MongoDB Connected
-🚀 Server running on port 5000
-🧪 API Endpoints
-🔹 POST /api/register
-Register a new business and send a mock verification link (printed in terminal)
+Access it at: http://localhost:3000/health
 
-Body:
+2️⃣ Start Prometheus + Grafana via Docker
+cd ..
+docker-compose up -d
 
-{
-  "name": "SuperMart",
-  "email": "supermart@example.com"
-}
-Response:
+Prometheus: http://localhost:9090
 
-{
-  "message": "Registration successful. Check mock email for verification link."
-}
-🔹 GET /api/verify-email/:token
-Verify email and receive tenantId + apiKey
+Grafana: http://localhost:3000
+Default login: admin / admin123
 
-Response:
 
-{
-  "message": "Email verified successfully!",
-  "tenantId": "tenant_supermart_1234",
-  "apiKey": "api_xxxx-xxxx-uuid"
-}
-💡 The verification link is printed in the console (mock email).
+📊 Configure Grafana
+1. Go to Settings > Data Sources
 
-🔐 Security Best Practices
-.env is ignored in version control.
+2. Add Prometheus:
+http://prometheus:9090
 
-API keys are generated using UUIDs and can be used to secure other services.
+3. Create dashboard panels with queries like:
 
-Use .env.example to share config variables with other developers.
+up
+
+process_resident_memory_bytes
+
+process_cpu_seconds_total
+
+🚨 Optional: Azure Monitor Alerts (for production)
+In Azure:
+
+Go to Monitor > Alerts > Create Alert Rule
+
+Select your App Service or VM
+
+Set condition: e.g., memory > 400 MB
+
+Set action: email/SMS/webhook
+
 
 👨‍💻 Author
-Minakshi
+  **Sumit**
+ Terragrid Tech
+
+
+
+
+
+
+
+
+

@@ -194,6 +194,26 @@ services:
     expose:
       - "5000"
 
+  service40:
+    build: ./service40
+    expose:
+      - "5000"
+
+  service41:
+    build: ./service41
+    expose:
+      - "5000"        
+  
+  service42:
+    build: ./service42
+    expose:
+      - "5000"
+
+  service43:
+    build: ./service43
+    expose:
+      - "5000"
+    
   gateway:
     build: ./gateway
     ports:
@@ -238,3 +258,7 @@ services:
       - service37
       - service38
       - service39
+      - service40
+      - service41
+      - service42
+      - service43

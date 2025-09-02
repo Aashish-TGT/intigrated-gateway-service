@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; }
+      .receipt { border: 1px solid #ddd; padding: 20px; width: 400px; }
+      h1 { color: #333; font-size: 20px; }
+      p { margin: 5px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="receipt">
+      <h1>Receipt</h1>
+      <p><b>Transaction ID:</b> {{tx.transactionId}}</p>
+      <p><b>Amount:</b> {{tx.amount}} {{tx.currency}}</p>
+      <p><b>Date:</b> {{tx.date}}</p>
+      <p><b>Customer:</b> {{tx.customerName}}</p>
+    </div>
+  </body>
+</html>

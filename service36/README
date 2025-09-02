@@ -1,98 +1,119 @@
-# ⚙️ Smart IoT Device Compatibility Service
+# 🌱 Carbon Receipt Impact Tracker
 
-A Node.js-based service that connects smart devices (like EV chargers, kiosks, or fuel dispensers) to a backend system using MQTT and WebSocket. It supports device authorization, transaction generation, and real-time dashboard updates.
-
----
-
-## 🚀 Purpose
-
-- Bridge data from smart IoT devices to cloud services
-- Format and push transaction data in real-time
-- Provide a live dashboard using WebSocket
-- Built for EV-first, tolling, and automated commerce systems
+A full-stack web application to help businesses measure and reduce their carbon footprint by switching from paper to digital receipts.
 
 ---
 
-## 🧱 Tech Stack
+## 🚀 Features
 
-- **Node.js** (Express.js)
-- **MQTT** (via `mqtt` package)
-- **WebSocket** (via `ws`)
-- **In-memory DB** (simulated using arrays)
-- **Dashboard** (Vanilla HTML + WebSocket)
+- 📊 Track CO₂ saved based on digital receipts
+- 🧾 Compare digital vs paper usage
+- 📈 Monthly impact reports
+- 📥 Export CSV report
+- ⚙️ RESTful API with Express.js
+- 🌐 Dashboard built in React.js
+- ☁️ MongoDB for persistent storage
 
 ---
 
 ## 📁 Project Structure
-smart-iot-device-service/
-├── controllers/ # Device & transaction handlers
-├── routes/ # API routes
-├── services/ # MQTT subscriber service
-├── utils/ # Auth middleware
-├── models/ # Simulated in-memory database
-├── public/ # WebSocket-enabled dashboard
-├── scripts/ # Mock EV data publisher
-├── .env # Config values (port, token, etc.)
-├── .gitignore
-├── LICENSE
-├── README.md
-├── package.json
-└── server.js
+
+MS36-CARBON-RECEIPT-MAIN/
+│
+├── data/                         # Emission factors or static config
+│   └── emissionFactors.js
+│
+├── models/                       # Mongoose schemas for MongoDB
+│   ├── Impact.js
+│   └── Receipt.js
+│
+├── routes/                       # All Express route handlers
+│   ├── co2Routes.js
+│   └── receiptRoutes.js
+│
+├── src/                          # Frontend React code (if embedded)
+│   └── components/
+│       └── CarbonImpactDashboard.js
+│
+├── .env                          # Environment variables (Mongo URI, etc.)
+├── .gitignore                   # Git ignore file
+├── index.js                     # Main server entry point (Express app)
+├── package.json                 # Node.js project config
+├── package-lock.json            # NPM lock file
+├── seed.js                      # DB seeding script
+└── README.md                    # Project documentation
 
 
 ---
 
-## 📦 Installation
+## ⚙️ Backend Setup (Node.js + Express)
 
+### 🔧 Prerequisites
+- Node.js & npm
+- MongoDB (local or Atlas)
+
+### 📦 Install Dependencies
 ```bash
-git clone https://github.com/sumit-TGT/smart-iot-device-service.git
-cd smart-iot-device-service
+cd backend
 npm install
 
-⚙️ Environment Variables
-Create a .env file in the root:
+🔑 Environment Setup
+Create a .env file in backend/:
 
-PORT=3000
-API_TOKEN=securetoken123
-MQTT_BROKER=mqtt://broker.hivemq.com
+MONGODB_URI=mongodb://localhost:27017/carbon
+PORT=5000
 
-🧪 Running the Project
-Start the backend + dashboard:
+▶️ Start Server
+npm start
+Server will run at: http://localhost:5000
 
- npm start
- Open: http://localhost:3000/dashboard.html
+🌐 Frontend Setup (React)
+📦 Install Dependencies
+cd frontend
+npm install
 
- Run mock EV charger publisher:
+▶️ Run Frontend
+npm start
+App will run at: http://localhost:3000
 
-  npm run mock:ev
-It sends random EV charging transactions to the MQTT topic ev/charger/transactions.
+🛠️ API Endpoints
+| Method | Endpoint                     | Description                          |
+| ------ | ---------------------------- | ------------------------------------ |
+| `POST` | `/calculate-saving`          | Save monthly paper receipt reduction |
+| `GET`  | `/report/:businessId`        | Fetch carbon report for business     |
+| `GET`  | `/report/:businessId/export` | Download report as CSV               |
+| `GET`  | `/co2-saved/:businessId`     | CO₂ saved from digital receipts      |
 
-📊 Features
-✅ Device authorization endpoint (/api/devices/authorize)
+📊 Dashboard Preview
+React Dashboard UI with TailwindCSS
 
-✅ Transaction generation endpoint (/api/transactions)
+Monthly CO₂ savings table
 
-✅ MQTT Subscriber: listens for EV charger data
+Export to CSV button
 
-✅ WebSocket Dashboard: see live receipts appear instantly
+Responsive design
 
-✅ Custom fields like mileage, meter, and unit
+📌 Emission Factors
+Configured in: backend/data/emissionFactors.js
+
+module.exports = {
+  paperReceipt: { gramsCO2PerReceipt: 2.5 },
+  digitalReceipt: { gramsCO2Saved: 4 }
+};
 
 
-🔐 API Auth
-All POST/GET to /api/* routes require this header:
-Authorization: securetoken123
+📤 Future Enhancements
+🔐 Business login/auth
 
+🗓️ Filter by date/year
+
+📉 Add graphs (Chart.js)
+
+☁️ Deploy to Vercel (React) + Render (Node)
 
 🧑‍💻 Author
 Sumit Kumar
-[Terra Grid Tech]
-
-
-
-
-
-
+@Intern(TerraGridTech)
 
 
 

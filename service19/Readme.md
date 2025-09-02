@@ -1,177 +1,105 @@
-## 📱 Mobile App API Gateway
+# 🧩 User Onboarding Microservice
 
-This is an Express-based API Gateway designed to authenticate and route mobile app requests to a microservice (like a digital receipt generator). It uses JWT authentication to ensure only authorized users can access protected routes.
-
----
-
-### 📁 Folder Structure
-
-```
-
-mobile-app-gateway-services/
-├── gateway/           # Express Gateway server
-│   └── mobile.js      # Gateway routing and JWT validation
-├── receipt-service/   # Microservice that generates receipts
-├── .env               # Environment variables (JWT secret)
-├── package.json
-└── README.md
-```
+A lightweight Node.js microservice to register businesses after POS plugin installation.  
+It handles user registration, email verification, and generates a secure tenant ID and API key.
 
 ---
 
-### 🚀 Features
+## 🚀 Features
 
-* 🔐 JWT-based authentication
-* ⚙️ Middleware for token validation
-* ↻ Forwards authorized requests to downstream services
-* ❌ Blocks invalid or missing tokens
-* 🌐 Supports communication between multiple microservices
-
----
-
-### 📦 Installation
-
-```bash
-git clone https://github.com/your-username/mobile-app-gateway-services.git
-cd mobile-app-gateway-services/gateway
-npm install
-```
+- ✅ Register new businesses
+- ✅ Email verification using token
+- ✅ Unique Tenant ID generation
+- ✅ Secure API key generation
+- ✅ MongoDB-backed storage
 
 ---
 
-### ⚙️ Configuration
+## 🧱 Folder Structure
 
-Create a `.env` file in the `gateway/` folder:
+microservices19/
+├── config/ # MongoDB connection setup
+│ └── db.js
+├── controllers/ # Business logic for registration and verification
+│ └── authController.js
+├── models/ # Mongoose schemas
+│ ├── Business.js
+│ └── EmailToken.js
+├── routes/ # API route definitions
+│ └── authRoutes.js
+├── utils/ # Utility functions (API key, Tenant ID generator)
+│ ├── generateApiKey.js
+│ └── generateTenantId.js
+├── .env.example # Sample environment config (excluded: .env)
+├── .gitignore # Prevents uploading of node_modules and .env
+├── LICENSE # MIT License
+├── README.md # You're reading it!
+└── server.js # Main entry point
 
-```env
+
+---
+
+## 📦 Tech Stack
+
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB, Mongoose
+- **Tools:** dotenv, crypto, uuid
+
+---
+
+## ⚙️ Environment Setup
+
+1. Create a `.env` file in the root:
+
+```ini
 PORT=3000
-JWT_SECRET=mysecret123
-```
+MONGO_URI=mongodb://localhost:27017/onboardingdb
+BASE_URL=http://localhost:3000
+Install dependencies:
 
-Make sure the same `JWT_SECRET` is used in your token generator (auth service or manually).
+npm install
+Start MongoDB service (Windows):
 
----
-
-### 🔐 JWT Token Format
-
-When making API requests, pass the token in the `Authorization` header like this:
-
-```
-Authorization: Bearer <your_jwt_token>
-```
-
----
-
-### 🧪 Sample JWT Payload
-
-```json
-{
-  "user": "test",
-  "iat": 1752669034,
-  "exp": 1752672634
-}
-```
-
-Generate token using:
-
-```js
-const jwt = require('jsonwebtoken');
-const token = jwt.sign({ user: 'test' }, process.env.JWT_SECRET, { expiresIn: '1h' });
-```
-
----
-
-### 🛚️ Available Routes
-
-| Method | Endpoint              | Description                       | Protected |
-| ------ | --------------------- | --------------------------------- | --------- |
-| GET    | `/mobile/receipt/:id` | Fetch a receipt from microservice | ✅ Yes     |
-
----
-
-### 🧾 Example Usage (Postman)
-
-**GET** `http://localhost:3000/mobile/receipt/123`
-
-**Headers:**
-
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
-```
-
-**Response:**
-
-```json
-{
-  "receiptId": "123",
-  "amount": 100,
-  "status": "paid"
-}
-```
-
----
-
-### ❌ Error Handling
-
-| Status | Message                 | Cause                            |
-| ------ | ----------------------- | -------------------------------- |
-| 401    | Token missing           | No Authorization header provided |
-| 401    | Invalid token           | Token expired or not valid       |
-| 500    | Failed to fetch receipt | Microservice unavailable         |
-
----
-
-### 🧑‍💻 Development
-
-Start the gateway:
-
-```bash
+net start MongoDB
+Run the server:
 node server.js
-```
+You should see:
 
-Or use:
+✅ MongoDB Connected
+🚀 Server running on port 5000
+🧪 API Endpoints
+🔹 POST /api/register
+Register a new business and send a mock verification link (printed in terminal)
 
-```bash
-npm start
-```
+Body:
 
----
+{
+  "name": "SuperMart",
+  "email": "supermart@example.com"
+}
+Response:
 
-### 📌 Dependencies
+{
+  "message": "Registration successful. Check mock email for verification link."
+}
+🔹 GET /api/verify-email/:token
+Verify email and receive tenantId + apiKey
 
-* `express`
-* `jsonwebtoken`
-* `axios`
-* `dotenv`
+Response:
 
-Install with:
+{
+  "message": "Email verified successfully!",
+  "tenantId": "tenant_supermart_1234",
+  "apiKey": "api_xxxx-xxxx-uuid"
+}
+💡 The verification link is printed in the console (mock email).
 
-```bash
-npm install express jsonwebtoken axios dotenv
-```
+🔐 Security Best Practices
+.env is ignored in version control.
 
----
+API keys are generated using UUIDs and can be used to secure other services.
 
-### 📂 Microservice URL
+Use .env.example to share config variables with other developers.
 
-Make sure your **receipt microservice** is running and reachable at:
-
-```
-http://localhost:5001/receipt/:id
-```
-
----
-
-### 🛅 Future Improvements
-
-* Add Rate Limiting
-* Support for more microservices
-* Logging and monitoring
-* Refresh token support
-
----
-
-### 🧑‍💼 Author
-
-Made by **Suraj Maurya**
-🔗 Portfolio
+👨‍💻 Author
+Minakshi

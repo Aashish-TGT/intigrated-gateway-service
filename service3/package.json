@@ -1,0 +1,23 @@
+{
+  "name": "receipt-service",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --env-file=.env src/index.js",
+    "start": "NODE_ENV=production node src/index.js"
+  },
+  "dependencies": {
+    "@azure/service-bus": "^7.9.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "handlebars": "^4.7.8",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "pdfkit": "^0.17.2",
+    "puppeteer": "^22.15.0",
+    "sanitize-html": "^2.13.1",
+    "zod": "^3.23.8"
+  }
+}

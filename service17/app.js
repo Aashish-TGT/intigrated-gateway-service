@@ -1,16 +1,27 @@
-console.log("ENV Loaded:", process.env.DATABASE_URL);
-require("dotenv").config();
-const express = require("express");
+const express = require('express');
 const app = express();
-const policyRoutes = require("./routes/policyRoutes");
-const lifecycleRoutes = require("./routes/lifecycleRoutes");
-const startCron = require("./services/cronJob");
+const port = 3000;
 
+// Middleware to parse JSON bodies
 app.use(express.json());
-app.use("/api", policyRoutes);
-app.use("/api", lifecycleRoutes);
 
-startCron(); // starts daily job
+// ✅ Define POST /api/feedback route
+app.post('/api/feedback', (req, res) => {
+  const { category, description, email } = req.body;
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Data Lifecycle Service running on ${PORT}`));
+  if (!category || !description || !email) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  console.log('Feedback received:', req.body);
+  res.status(200).json({ message: 'Feedback received successfully' });
+});
+
+// Optional health check route
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
+app.listen(port, () => {
+  console.log(`✅ Server listening at http://localhost:${port}`);
+});

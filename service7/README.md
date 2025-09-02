@@ -1,100 +1,162 @@
-# 🧩 Template Management Service
+# 📦 Business Sync Service
 
-A microservice to manage custom receipt templates with dynamic fields, white-label branding, and secure rendering — built using **Node.js + EJS**.
+The **Business Sync Service** is a Node.js-based microservice designed to capture receipt data and synchronize it across accounting platforms like **QuickBooks**, **Zoho**, and **Tally**.
 
 ---
 
 ## 🚀 Features
 
-- 📤 Upload custom `.ejs` HTML templates
-- 🔍 Render with dynamic data (preview support)
-- ⚙️ Secure sandboxed rendering using `sanitize-html`
-- 🧾 White-label and POS region-based localization support
-- 🌐 REST API with Postman-friendly endpoints
+- ✅ Create and store receipts in MongoDB
+- 🔁 Sync receipts to QuickBooks, Zoho, or Tally (mocked)
+- 🔒 Input validation with `express-validator`
+- 🧱 Modular service architecture
+- ⚙️ Centralized error handling
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-- Node.js
-- Express.js
-- EJS (HTML Template Engine)
-- Multer (for file uploads)
-- Morgan (request logger)
-- Sanitize-HTML (sandboxing)
+- Node.js & Express
+- MongoDB with Mongoose
+- REST API design
+- OAuth2 (planned for Zoho & QuickBooks)
+- XML over HTTP (planned for Tally)
 
 ---
 
-## 📁 Folder Structure
+## 📂 Folder Structure
 
-
-template-management-service/
-├── controllers/
+```
+Microservice7-SyncReciept-main/
+├── app.js
+├── .env
 ├── routes/
-├── templates/
-├── uploads/
+│ └── receipt.routes.js
+├── controllers/
+│ └── receipt.controller.js
+├── services/
+│ ├── syncQuickBooks.js
+│ ├── syncZoho.js
+│ └── syncTally.js
+├── middleware/
+│ └── errorHandler.js
+├── models/
+│ └── receipt.model.js
 ├── utils/
-├── views/
-├── server.js
-├── package.json
-└── .gitignore
+│ └── mapper.js
+└── README.md
 
-# 🧩 API Endpoints
+
 
 ---
 
-### ✅ POST `/templates/upload`
+## ⚙️ Getting Started
 
-Upload a new EJS/HTML template file to the server.
+### 1. Clone the Repository
+```bash
 
-```form-data
-Key:    template
-Type:   File
-Value:  sampleReceipt.ejs
-
+git clone https://github.com/your-username/business-sync-service.git
+cd business-sync-service
 
 
-GET /templates/list
-Returns a list of all uploaded template files.
-
-🧾 Example Response:
-
-{
-  "templates": [
-    "1721058800123-sampleReceipt.ejs",
-    "1721060002345-brandReceipt.ejs"
-  ]
-}
-✅ GET /templates/preview/:filename
-Render the receipt with sample dynamic data.
-
-🌐 Example:
-http://localhost:3000/templates/preview/1721058800123-sampleReceipt.ejs
-
-🖥️ Renders the file using EJS with:
-
-customerName, orderId, amount, region, date
-
-Embedded values and white-label support
-
-
-
-📃 License
-This project is licensed under the MIT License – free to use, modify, and distribute.
-
-
-
-✍️ Author
-Minakshi Saini
-
-
-
-## 🚀 How to Use
-
-1. Save the above content as `README.md` in your root folder.
-2. Then run the following commands:
+### 2. Install Dependencies
 
 ```bash
-git add README.md
-git commit -m "Added compact README with template API docs"
-git push
+npm install
+```
+
+### 3. Configure Environment
+
+Create a `.env` file:
+
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/receipt-service
+NODE_ENV=development
+
+
+▶️ Running the Service
+Make sure MongoDB is running locally, then start the server:
+```bash
+
+npm start
+You can now access the API at:
+
+http://localhost:3000/api/receipts
+
+
+🔁 API Endpoints
+| Method | Endpoint                 | Description                            |
+| ------ | ------------------------ | -------------------------------------- |
+| POST   | `/api/receipts`          | Create a new receipt                   |
+| GET    | `/api/receipts/:id`      | Retrieve receipt by ID                 |
+| POST   | `/api/receipts/:id/sync` | Sync the receipt to the given platform |
+
+
+📥 Sample Receipt Payload
+```json
+
+{
+  "platform": "quickbooks",
+  "amount": 1500,
+  "date": "2025-08-02",
+  "customer": "John Doe",
+  "items": [
+    { "name": "Product A", "qty": 2, "price": 750 }
+  ]
+}
+
+
+### 🔄 Sync Receipt
+
+```
+POST /api/receipts/:id/sync
+```
+
+Syncs the selected receipt to the specified platform.
+
+### 🔍 Get Receipt
+
+```
+GET /api/receipts/:id
+```
+
+Returns the receipt details including sync status.
+
+---
+
+## 🧩 Example Receipt Object
+
+```json
+{
+  "_id": "664d2487c7a9fa7f7c123456",
+  "vendor": "Amazon",
+  "amount": 2500,
+  "date": "2025-06-19T00:00:00.000Z",
+  "tags": ["electronics"],
+  "platform": "zoho",
+  "status": "pending",
+  "metadata": {
+    "invoice_no": "AMZ123",
+    "payment_method": "credit card"
+  }
+}
+```
+
+---
+
+## 📌 To-Do / Roadmap
+
+- [ ] Add authentication (JWT)
+- [ ] Add webhook support
+- [ ] Background sync using BullMQ
+- [ ] Sync logs UI (React dashboard)
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Author ##
+Sumit Kumar
+@Intern[TGT]

@@ -1,92 +1,139 @@
-# 📮 Feedback & Issue Reporting Microservice
+# 🛡️ Audit & Compliance Service
 
-A lightweight and secure microservice to collect feedback and issue reports from users or admins. Built with Node.js, Express, MongoDB, and JWT authentication.
-
----
-
-## 🚀 Features
-
-- 🧾 Submit feedback with categories like `bug`, `UI`, `feature request`
-- 🔐 JWT authentication required to submit feedback
-- 📦 MongoDB for storing all feedback data
-- 🧠 Spam filter & email auto-response logic (optional/future ready)
-- 📋 Admin can retrieve all submitted feedback
-- 🛡️ Secure API endpoints with middleware
+A microservice that captures and stores user actions for legal and regulatory compliance using **Kafka**, **Azure CosmosDB**, and **Node.js**. It supports **GDPR-compliant logs**, **timestamped audit trails**, and **exportable reports** in CSV and PDF format.
 
 ---
 
-## 🧰 Tech Stack
+## 📌 Features
 
-- **Node.js**
-- **Express.js**
-- **MongoDB (Mongoose)**
-- **JWT (jsonwebtoken)**
-- *(Email functionality is disabled by default)*
+- ✅ GDPR-compliant immutable audit logs
+- 🕓 Timestamped user actions
+- 📁 Export data as CSV or PDF
+- 🔍 Filter audit logs by `userId`
+- ⚙️ Built on Kafka + CosmosDB + Express.js
 
 ---
 
-## 📁 Folder Structure
+## 🔧 Tech Stack
 
-microservices-16/
-├── controllers/ # Business logic
-│ └── feedbackController.js
-├── models/ # Mongoose schema
-│ └── Feedback.js
-├── routes/ # API routing
-│ └── feedbackRoutes.js
-├── middleware/ # Auth middleware
-│ └── authMiddleware.js
-├── utils/ # Optional utilities (e.g., mailer)
-├── .env # Environment variables
-├── .gitignore
-├── index.js # App entry point
+| Tool         | Use                          |
+|--------------|-------------------------------|
+| Kafka        | Event streaming               |
+| CosmosDB     | Document database             |
+| Express.js   | REST API                      |
+| json2csv     | CSV export                    |
+| pdfkit       | PDF generation                |
+| dotenv       | Environment configuration     |
+
+---
+
+## 📂 Project Structure
+
+```
+audit-compliance/
+├── kafka/             # Kafka producer and consumer
+├── cosmos/            # Cosmos DB client
+├── routes/            # Express API routes
+├── exports/           # CSV and PDF export functions
+├── .env               # Environment variables
+├── server.js          # Entry point
 └── package.json
-
-
+```
 
 ---
 
-## 🔐 Generate a JWT Token
+## ⚙️ Setup Instructions
 
-For testing protected routes, generate a token:
+### 1. 📥 Clone the repository
+
+```bash
+git clone https://github.com/your-username/audit-compliance.git
+cd audit-compliance
+```
+
+### 2. 📦 Install dependencies
+
+```bash
+npm install
+```
+
+### 3. 🛠️ Configure environment
+
+Create a `.env` file:
+
+```env
+KAFKA_BROKER=localhost:9092
+COSMOS_ENDPOINT=your_cosmosdb_url
+COSMOS_KEY=your_cosmosdb_key
+COSMOS_DATABASE=AuditDB
+COSMOS_CONTAINER=Events
+```
+
+### 4. 🚀 Start the service
+
+```bash
+npm start
+```
+
+Kafka consumer will start and REST APIs will be available on **http://localhost:3000**.
+
+---
+
+## 📡 API Endpoints
+
+### `GET /audit/events`
+
+**Query Params:**
+- `userId` (optional): Filter by user
+- `exportType` (optional): `csv` or `pdf`
+
+**Examples:**
+
+- Fetch all logs:
+  ```
+  GET /audit/events
+  ```
+
+- Filter by user:
+  ```
+  GET /audit/events?userId=123
+  ```
+
+- Export as CSV:
+  ```
+  GET /audit/events?exportType=csv
+  ```
+
+- Export as PDF:
+  ```
+  GET /audit/events?exportType=pdf
+  ```
+
+---
+
+## 📤 Sending Audit Events
+
+Use the Kafka producer (`producer.js`) to emit events:
 
 ```js
-const jwt = require("jsonwebtoken");
-const token = jwt.sign(
-  { userId: "1234", role: "user" },
-  "feedback_api_secret_786",
-  { expiresIn: "1h" }
-);
-console.log(token);
-📬 Sample API Request (Postman)
-🔸 URL:
-POST http://localhost:3000/api/feedback
+sendAuditEvent({
+  userId: "123",
+  action: "LOGIN",
+  description: "User logged in"
+});
+```
 
-🔸 Headers:
+Each event is automatically timestamped and stored in CosmosDB.
 
-Content-Type: application/json
-Authorization: Bearer <your_token>
+---
 
-🔸 Body (raw JSON):
+## 📃 License
 
-{
-  "name": "Manjeet",
-  "email": "manjeet@example.com",
-  "category": "bug",
-  "message": "Login page crashing on submit"
-}
-🧪 Run the Server
+MIT License
 
-npm install
-npm start
-MongoDB should be running locally at mongodb://localhost:27017/feedbackdb.
+---
 
-🧑‍💻 Developer
-Name: Manish Kumari-TGT
+## 🙋‍♂️ Author
 
-Project: Feedback API Microservice
-
-Purpose: Collect feedback from users securely for any web app
-
-🪪 License
-This project is licensed under the MIT License.
+Made with ❤️ by **Sumit**  
+Intern at Tera Grid Tech | Node.js | Kafka | CosmosDB

@@ -1,35 +1,22 @@
-# 🏢 Multi-Tenant Management Microservice
+# Subscription & Billing Service
 
-This microservice manages multiple tenants in a SaaS app.
+## Purpose
+This service helps manage user plans, limits, and payments. For example, if a customer is using 1,000 QR codes per day, this service checks if it's within their plan and generates a bill if they cross the limit.
 
-## 📦 Tech Stack
+## Technology Used (Tech Stack)
+- **Node.js**: The coding language used to build the service.
+- **Stripe / Razorpay**: Online payment tools to handle transactions.
 
-- Node.js + Express
-- MongoDB + Mongoose
-- JWT for auth
-- bcrypt for password hashing
+## Communication
+- **REST APIs**: Used to talk with other parts of the system (like asking for user limits or payment info).
+- **Webhooks**: Used to receive updates from Stripe or Razorpay when someone makes a payment.
 
-## 📁 Project Structure
+## Security
+- **PCI-DSS Compliance**: This is a standard to keep payment information safe.
+- **Audit Logs**: It keeps records of every activity for tracking and safety.
 
-microservices-14/
-├── controllers/ # Business logic
-├── models/ # MongoDB schemas
-├── routes/ # API routes
-├── middleware/ # JWT auth middleware
-├── utils/ # Token generator
-├── .env # Environment variables
-├── .gitignore # Ignored files/folders
-├── server.js # Server bootstrap
-├── app.js # Express app setup
-└── README.md # Project documentation
-
-
-
-🧑‍💻 Developer
-Name: Manish Kumari-TGT
-
-Project: multi-tenant-management-service
-
-🪪 License
-This project is licensed under the MIT License.
-
+## Key Features
+- **QR Usage Meter**: Tracks how many QR codes a customer uses.
+- **Overage Alerts**: Sends alerts if they use more than their allowed limit.
+- **Invoice & Payment Status APIs**: Lets other systems check the invoice and payment status.
+- **Webhooks for Payment Confirmation**: Gets automatic updates when a user pays the bill.

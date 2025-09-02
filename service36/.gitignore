@@ -1,21 +1,38 @@
-# Dependency directories
+# === Node.js ===
 node_modules/
-
-# dotenv config
 .env
-
-# Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Optional cache
-.cache/
+# === Logs ===
+logs/
+*.log
+*.pid
+*.seed
+
+# === Build Artifacts ===
 dist/
 build/
 
-# OS files
+# === OS files ===
 .DS_Store
 Thumbs.db
+
+# === React ===
+/frontend/node_modules/
+/frontend/.env
+/frontend/build/
+
+# === Optional IDE files ===
+.vscode/
+.idea/
+
+# === Misc ===
+*.tgz
+*.zip
+coverage/
+.env.local
+.env.development
+.env.test
+.env.production

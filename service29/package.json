@@ -1,34 +1,20 @@
 {
-  "name": "receipt-template-customization-ui",
+  "name": "microservices-29",
   "version": "1.0.0",
-  "description": "A front-end web tool for visually creating, previewing, and saving customized receipt templates.",
-  "main": "index.js",
+  "main": "app.js",
+  
+
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
-  },
+  "start": "node app.js"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "tailwindcss": "latest",
-    "mongodb": "latest",
-    "axios": "latest"
-  },
-  "devDependencies": {
-    "eslint": "latest",
-    "eslint-config-next": "latest",
-    "typescript": "latest"
-  },
-  "keywords": [
-    "receipt",
-    "template",
-    "customization",
-    "POS",
-    "frontend"
-  ],
-  "author": "Your Name",
-  "license": "MIT"
+    "dotenv": "^17.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  }
 }

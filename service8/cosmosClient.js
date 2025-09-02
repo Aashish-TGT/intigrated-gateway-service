@@ -1,23 +1,24 @@
-const { CosmosClient } = require('@azure/cosmos');
+// cosmosClient.js
+const { CosmosClient } = require("@azure/cosmos");
+require("dotenv").config();
+
+const {
+  COSMOS_ENDPOINT,
+  COSMOS_KEY,
+  COSMOS_DATABASE,
+  COSMOS_CONTAINER
+} = process.env;
+
+if (!COSMOS_ENDPOINT || !COSMOS_KEY || !COSMOS_DATABASE || !COSMOS_CONTAINER) {
+  throw new Error("❌ Missing Cosmos DB configuration in .env file.");
+}
+
 const client = new CosmosClient({
-  endpoint: process.env.COSMOS_ENDPOINT,
-  key: process.env.COSMOS_KEY
+  endpoint: COSMOS_ENDPOINT,
+  key: COSMOS_KEY,
 });
-const database = client.database(process.env.COSMOS_DATABASE);
-const container = database.container(process.env.COSMOS_CONTAINER);
 
-async function insertEvent(event) {
-  event.timestamp = new Date().toISOString();
-  await container.items.create(event);
-}
+const database = client.database(COSMOS_DATABASE);
+const container = database.container(COSMOS_CONTAINER);
 
-async function queryEvents(filter = {}) {
-  const query = {
-    query: 'SELECT * FROM c WHERE (@userId IS NULL OR c.userId = @userId)',
-    parameters: [{ name: '@userId', value: filter.userId || null }]
-  };
-  const { resources } = await container.items.query(query).fetchAll();
-  return resources;
-}
-
-module.exports = { insertEvent, queryEvents };
+module.exports = container;

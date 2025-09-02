@@ -1,124 +1,155 @@
-# 📟 Digital Receipt Microservice + API Gateway
+# 🧾 POS Admin Panel Backend
 
-This project is part of a scalable microservices architecture designed to generate and manage digital receipts in PDF format with embedded QR codes. It includes an **API Gateway** for secure access control, request validation, and rate limiting.
-
----
-
-## 📁 Folder Structure
-
-```
-API-GATEWAY/
-├── receipt-gateway/     # Express Gateway configuration
-├── receipt-service/     # Receipt generation microservice
-├── .gitignore
-└── README.md
-```
+This is a Node.js-based backend service for an Admin Panel used in a Point of Sale (POS) system. It enables retail admins to manage clients, monitor digital receipts, track subscription usage, view dues, and handle POS terminal data securely.
 
 ---
 
-## 🚀 Services Overview
+## 🚀 Tech Stack
 
-### 1. `receipt-service` (Microservice)
+- **Backend**: Node.js + Express.js
+- **Database**: MySQL (via Sequelize ORM)
+- **Authentication**: JWT (JSON Web Token)
+- **Security**: dotenv for environment variables, bcrypt for password hashing
+- **Dev Tools**: nodemon for auto-reloading
 
-A Node.js service that:
+---
 
-- Accepts receipt data via `POST` request
-- Generates a PDF receipt with an embedded QR code
-- Returns the PDF as a downloadable file
+## 📁 Project Structure
 
-**📦 Expected Payload:**
-
-```json
-{
-  "customerName": "Suraj",
-  "items": ["USB Cable", "Notebook"],
-  "totalAmount": 299.50
-}
+```
+admin-panel-service/
+│
+├── config/
+│   └── db.js               # Sequelize MySQL DB connection
+│
+├── middlewares/
+│   └── auth.js             # JWT auth middleware
+│
+├── models/
+│   ├── Admin.js            # Admin model
+│   ├── Client.js           # Client model
+│   └── Receipt.js          # Receipt model, with client association
+│
+├── routes/
+│   ├── adminRoutes.js      # Admin registration and login
+│   └── clientRoutes.js     # Client data, usage, and receipts
+│
+├── .env                    # Environment config (e.g. DB credentials, JWT secret)
+├── app.js                  # Entry point of the application
+├── package.json            # Project metadata and dependencies
+└── README.md               # Project documentation (this file)
 ```
 
-**▶ To run locally:**
+---
+
+## 🔐 Environment Variables (.env)
+
+```env
+PORT=5009
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=@A18tauru123
+DB_NAME=admin_panel_db
+JWT_SECRET=adminSecretKey
+```
+
+---
+
+## 🔧 Installation & Setup
+
+1. **Clone the repo:**
 
 ```bash
-cd receipt-service
+git clone https://github.com/your-org/admin-panel-service.git
+cd admin-panel-service
+```
+
+2. **Install dependencies:**
+
+```bash
 npm install
-node receipt-service.js
 ```
 
----
+3. **Configure environment variables:**
 
-### 2. `receipt-gateway` (API Gateway)
+Edit `.env` file with your DB credentials.
 
-An Express Gateway service that:
+4. **Start MySQL and create the database manually (if not already created):**
 
-- Routes and proxies API requests
-- Enforces rate limiting (5 requests/minute per IP)
-- Provides a single point of entry for external clients
-
-**📬 Route Configured:**
-
-```
-POST /v1/receipt
+```sql
+CREATE DATABASE admin_panel_db;
 ```
 
-**▶ To run locally:**
+5. **Run the app:**
 
 ```bash
-cd receipt-gateway
-npm install
-npm start
+npm run dev     # for development (with nodemon)
+npm start       # for production
 ```
 
 ---
 
-## 🔐 Key Features
+## 📦 API Endpoints
 
-👉 API Gateway routing via Express Gateway  
-👉 Rate limiting (throttling) to prevent abuse  
-👉 Request schema validation via middleware  
-👉 PDF receipt generation with embedded QR code  
-👉 Clean, modular microservices structure  
-👉 Postman- and client-friendly RESTful API
+### 🔐 Admin Authentication
 
----
-
-## 🔗 Sample API Request
-
-**POST** `http://localhost:8080/v1/receipt`
-
-**Request Body:**
-
-```json
-{
-  "customerName": "Suraj",
-  "items": ["USB Cable", "Notebook"],
-  "totalAmount": 299.50
-}
-```
-
-**Response:** PDF file (receipt) downloaded directly
+| Method | Route             | Description            |
+|--------|------------------|------------------------|
+| POST   | `/api/admin/register` | Register new admin |
+| POST   | `/api/admin/login`    | Admin login, returns JWT |
 
 ---
 
-## 📈 Future Enhancements
+### 👤 Client Management (JWT Protected)
 
-- 🔐 Add API Key or JWT authentication
-- 🐳 Dockerize all services using `docker-compose`
-- ☁ Deploy to Railway, Render, or Azure
-- 📘 Add Swagger/OpenAPI 3.0 documentation
-- 🧪 Add unit and integration tests with CI/CD
+Add header:  
+`Authorization: Bearer <your_token>`
 
----
-
-## ✅ Git Setup & Push
-
-Once configured locally, use the following Git commands:
-
-```bash
-git add .
-git commit -m "Initial commit: Gateway and Receipt service setup"
-git push -u origin main
-```
+| Method | Route                         | Description                          |
+|--------|------------------------------|--------------------------------------|
+| GET    | `/api/clients`               | Get all clients                      |
+| GET    | `/api/clients/:id/usage`     | Get subscription + dues info         |
+| GET    | `/api/clients/:id/receipts`  | Get all receipts for a client        |
+| POST   | `/api/clients/:id/receipts`  | Add new receipt + increment usage    |
 
 ---
 
-## 👨‍💻 Built with ❤️ by Suraj & Team
+## 🧪 Dummy Data
+
+- A default test client is created on first run:
+  - **Email**: `test@example.com`
+  - **Name**: `Test Client`
+  - **Subscription Limit**: `10`
+
+---
+
+## 📌 Features
+
+- Admin user registration and JWT login
+- Secure client listing and filtering
+- Client receipt printing and POS source tracking
+- Automatic subscription usage counting
+- Real-time due amount and receipt history view
+
+---
+
+## 🧰 Future Enhancements (Suggestions)
+
+- Admin dashboard UI (React-based frontend)
+- Export reports to PDF/Excel
+- Filter receipts by date range
+- Add POS terminal source metadata
+- Email notifications for dues
+
+---
+
+## 👨‍💻 Author
+
+Made with ❤️ by **Aashish**  
+Intern @ TGT by TerraGrid Tech
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more info.

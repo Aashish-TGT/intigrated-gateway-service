@@ -1,5 +1,5 @@
 # Base image
-FROM node:18-alpine
+FROM node:18
 
 # Working directory
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Expose port (default: 3000)
-EXPOSE 3000
+EXPOSE 4000
 
 # Start service
-CMD ["node", "index.js"]
+CMD ["node", "app.js"]

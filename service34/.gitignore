@@ -1,2 +1,14 @@
+
+# Node.js
 node_modules/
 .env
+logs/
+npm-debug.log*
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db

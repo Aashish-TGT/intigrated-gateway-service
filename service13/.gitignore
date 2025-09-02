@@ -1,14 +1,13 @@
-# Node dependencies
+# Node modules
 node_modules/
 
-# Uploaded PDFs
-uploads/
-
-# Compressed output files
-optimized/
-
-# Environment secrets
+# Environment variables
 .env
 
-# Logs and cache
+# Logs
 *.log
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/

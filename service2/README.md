@@ -1,163 +1,141 @@
-# MS6 Admin Panel Backend
+# POS Data Ingestion Service 🚀
 
-This is the backend service for the **Admin Panel** of a Digital Receipts Platform (Microservice 6). It provides RESTful APIs for admin login, client management, receipt tracking, subscription updates, transaction monitoring, system logging, and dashboard analytics.
-
-## 🚀 Tech Stack
-
-- **Backend Framework:** Node.js + Express.js  
-- **Database:** MySQL with Sequelize ORM  
-- **Authentication:** JWT (JSON Web Token)  
-- **Environment Config:** dotenv  
-- **Testing:** Postman
+A microservice to accept and validate POS/ATM transaction data, enqueue messages to **Azure Service Bus**, and support retries & dead-lettering.
 
 ---
 
-## 📁 Project Structure
+## 📌 Purpose
+- Accepts incoming POS/ATM transaction data via REST API.
+- Validates request payload using **JSON schema**.
+- Enqueues valid transactions into **Azure Service Bus** for downstream processing.
 
-ms6-admin-backend/
-├── controllers/
-│ └── auth.controller.js
-│ └── client.controller.js
-│ └── log.controller.js
-│ └── transaction.controller.js
-│ └── dashboard.controller.js
-├── models/
-│ └── index.js
-│ └── admin.model.js
-│ └── client.model.js
-│ └── receipt.model.js
-│ └── log.model.js
-│ └── transaction.model.js
-├── routes/
-│ └── auth.routes.js
-│ └── client.routes.js
-│ └── dashboard.routes.js
-│ └── log.routes.js
-│ └── transaction.routes.js
-├── middlewares/
-│ └── auth.middleware.js
-├── utils/
-│ └── logger.js
-├── config/
-│ └── db.config.js
-├── .env
-├── app.js
-└── server.js
+---
+
+## 🧰 Tech Stack
+- **Node.js + Express** – REST API.
+- **Zod** – JSON schema validation.
+- **Azure Service Bus** – Internal messaging (with retry & DLQ support).
+- **API key** – Authentication.
+- **Azure API Gateway (APIM)** – Rate limiting (configured outside the service).
+
+---
+
+## ⚙️ Features
+- ✅ **JSON Schema Validation** with Zod.  
+- ✅ **API Key Authentication** (`x-api-key` header).  
+- ✅ **Idempotency check** (basic in-memory cache).  
+- ✅ **Azure Service Bus integration** (retries + DLQ support).  
+- ✅ **Health Check** (`GET /health`).  
+- ✅ **Rate Limiting** via Azure API Gateway policies.  
+
+---
+## 📂 Project Structure
+pos-data-ingestion-service/
+├─ package.json
+├─ .env.example
+├─ src/
+│ ├─ server.js # Express API (validation + enqueue)
+│ ├─ consumer.js # Worker for processing messages
+│ ├─ bus.js # Azure Service Bus client factory
+│ ├─ schemas/ # Zod validation schemas
+│ └─ utils/ # Helpers (API key, idempotency)
+└─ docker/
+└─ Dockerfile
 
 
 ---
 
-## 🔐 Authentication Flow
-
-- **Login:** `POST /login`
-- **JWT Protected Routes:** All routes except login require `Authorization: Bearer <token>`
-- **Logout:** `POST /logout`
-- **Token Handling:** Refresh token implementation (if added)
-
----
-
-## 📊 API Endpoints
-
-### 🔐 Auth Routes
-
-| Method | Endpoint       | Description         |
-|--------|----------------|---------------------|
-| POST   | `/login`       | Admin login         |
-| POST   | `/logout`      | Admin logout        |
-
----
-
-### 📋 Dashboard Summary
-
-| Method | Endpoint              | Description                   |
-|--------|-----------------------|-------------------------------|
-| GET    | `/dashboard/summary`  | Get total clients, receipts, errors etc |
-
----
-
-### 👤 Client Management
-
-| Method | Endpoint              | Description                        |
-|--------|-----------------------|------------------------------------|
-| GET    | `/clients`            | Get all clients (with filters)     |
-| PUT    | `/clients/:id`        | Update client info                 |
-| PUT    | `/clients/:id/plan`   | Update client subscription plan    |
-
----
-
-### 📄 Transactions
-
-| Method | Endpoint              | Description                   |
-|--------|-----------------------|-------------------------------|
-| GET    | `/transactions`       | List all transactions (search/filter) |
-
----
-
-### 🪵 System Logs
-
-| Method | Endpoint         | Description                        |
-|--------|------------------|------------------------------------|
-| GET    | `/logs`          | Get all system logs with filters   |
-
----
-
-### ❗ Error Logs
-
-| Method | Endpoint         | Description                        |
-|--------|------------------|------------------------------------|
-| GET    | `/errors`        | Get only error logs (API/Receipt failures) |
-
----
-
-## 🧪 Postman Collection
-
-> ✅ Includes token-based auth, all routes grouped  
-> 🔐 First run `/login`, then use returned token as `Bearer <token>` in `Authorization` header
-
-**File:** [MS6_Admin_Backend.postman_collection.json](./MS6_Admin_Backend.postman_collection.json)
-
----
-
-## ⚙️ Environment Variables (.env)
+## 🔑 Environment Variables
+Copy `.env.example` to `.env` and fill with your values:
 
 ```env
-PORT=3000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=admin_panel_db
-JWT_SECRET=your_jwt_secret
+PORT=8080
+API_KEY=change-me-please
+SERVICEBUS_CONNECTION_STRING=Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<keyname>;SharedAccessKey=<key>
+SERVICEBUS_QUEUE_NAME=pos-transactions
+
+# Optional retry settings
+SB_RETRY_MAX_TRIES=5
+SB_RETRY_DELAY_MS=1000
 
 
- Setup Instructions
+Run Locally
 
- # Clone repo
-git clone https://github.com/yourusername/ms6-admin-backend.git
+1.Install dependencies:
 
-# Navigate to project
-cd ms6-admin-backend
-
-# Install dependencies
 npm install
 
-# Setup your .env file
-cp .env.example .env
 
-# Run server
-npm start
+2.Start API:
 
-Future Enhancements
-Add refresh token logic
+npm run dev
 
-API rate-limiting
 
-Pagination improvements
+3.Health check:
 
-Swagger documentation
+curl http://localhost:8080/health
 
-Made  by Aashish and Komal Rani
-intern in Tgt's
 
-## 📄 License
+4.Send test transaction:
+curl -X POST http://localhost:8080/ingest \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: change-me-please" \
+  -d '{
+    "transactionId":"txn_12345",
+    "amount":2450.75,
+    "currency":"INR",
+    "timestamp":"2025-08-30T06:15:30.000Z",
+    "posId":"POS-DELHI-01",
+    "method":"CARD",
+    "cardLast4":"1234"
+  }'
 
-This project is licensed under the [MIT License]
+Run the Worker
+
+node src/consumer.js
+Processes messages from Service Bus.
+
+Retries failed messages.
+
+Moves permanently failing messages to DLQ.
+
+
+
+Docker
+
+Build and run with Docker:
+docker build -t pos-data-ingestion .
+docker run -p 8080:8080 --env-file .env pos-data-ingestion
+
+Security Notes
+
+Use HTTPS behind API Gateway or APIM.
+
+Store secrets in Azure Key Vault (avoid plain .env in production).
+
+Rotate API keys regularly.
+
+Rate Limiting (via Azure APIM)
+
+Apply a policy in APIM:
+<policies>
+  <inbound>
+    <base />
+    <rate-limit-by-key calls="1000" renewal-period="60" counter-key="@(context.Request.IpAddress)" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+</policies>
+
+
+
+
+
+
+
+
+

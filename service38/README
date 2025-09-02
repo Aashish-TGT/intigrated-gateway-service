@@ -1,129 +1,75 @@
+# 👜 Digital Wallet Connector Service (Microservices 38)
 
-
-# 🌱 Sustainability & ESG Compliance Dashboard
-
-A Node.js-based backend dashboard for businesses to track their sustainability efforts, ESG footprint, and SDG compliance with downloadable PDF/Excel reports and Power BI/Grafana visualizations.
+A microservice built with Node.js to simulate syncing receipts to digital wallets like **Google Wallet**, **Apple Wallet**, and **UPI apps (Paytm, PhonePe)**.
 
 ---
-
-## 📌 Purpose
-
-To give B2B companies, banks, and government clients visibility into:
-- CO₂ reductions
-- Paper and tree savings
-- ESG scores (Environmental, Social, Governance)
-- UN SDG (Sustainable Development Goals) alignment
-
----
-
-## ⚙️ Tech Stack
-
-- **Backend**: Node.js, Express.js, MongoDB
-- **Visualization**: Power BI, Grafana
-- **Reports**: PDF (Puppeteer), Excel (ExcelJS)
-- **Auth**: ❌ None (Open for internal dashboard use)
-- **ESG Mapping**: Configurable via `esg-mapping.json`
-
----
-
 ## 📁 Folder Structure
-
-sustainability-dashboard/
-├── backend/
-│ ├── controllers/
-│ ├── routes/
-│ ├── services/
-│ ├── utils/
-│ ├── esg-mapping.json
-│ └── app.js
-│ |__ db.js
-|
-├── dashboard/
-│ ├── grafana-config/
-│ └── power-bi/
+├── app.js                         # Entry point – initializes Express app, routes, middleware
 │
-├── reports/
-│ └── templates/
+├── controllers/                  # Controllers handle API request logic
+│   └── walletController.js       # Core controller for handling wallet sync requests
 │
-├── .env
-├── .gitignore
-├── LICENSE
-└── README.md
+├── services/                     # Wallet-specific service adapters (mock for now)
+│   ├── googleWalletService.js    # Handles logic for syncing with Google Wallet
+│   ├── appleWalletService.js     # Handles Apple Wallet sync (future or simulated)
+│   └── upiWalletService.js       # Simulated sync for UPI apps like Paytm, PhonePe
+│
+├── events/                       # Handles event tracking or logging
+│   └── eventLogger.js            # Logs events like receipt sync success/failure
+│
+├── routes/                       # Route definitions
+│   └── walletRoutes.js           # Defines `/api/wallet/add` and maps to controller
+│
+├── utils/                        # Utility functions
+│   └── generatePayload.js        # Generates mock wallet payload for sync
+│
+├── mockData/                     # Sample/mock receipt or input data
+│   └── receiptSample.json        # Example JSON receipt used for testing
+│
+├── .gitignore                    # Prevents committing unnecessary files (e.g., node_modules)
+├── LICENSE                       # Open-source license (ISC License)
+├── README.md                     # Full documentation of the service
+└── package.json                  # Node project metadata and dependencies
 
 
----
 
-## 🚀 Setup Instructions
+## 🛠 Tech Stack
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/sumit-TGT/sustainability-dashboard.git
-cd sustainability-dashboard
-
-2. Install dependencies
-
-cd backend
-npm install
-
-3.  Configure environment variables
-Create a .env file inside /backend:
-
-PORT=3000
-DB_URI=mongodb://localhost:27017/esg-dashboard
-POWER_BI_WORKSPACE_ID=your_workspace_id
-POWER_BI_REPORT_ID=your_report_id
-POWER_BI_EMBED_URL=https://app.powerbi.com/reportEmbed?reportId=your_report_id&groupId=your_group_id
-POWER_BI_ACCESS_TOKEN=your_access_token
+- **Backend**: Node.js, Express.js
+- **Adapters**: Google Wallet, Apple Wallet, UPI (mock)
+- **Other**: UUID, Event Logging, JSON Payloads
 
 
-4. Start the backend server
-node app.js
+📬 API Endpoint
+POST /api/wallet/add
+Headers: Content-Type: application/json
 
-🧪 API Endpoints
+Request Body:
 
-| Method | Endpoint                      | Description                  |
-| ------ | ----------------------------- | ---------------------------- |
-| `POST` | `/api/v1/esg/upload`          | Upload ESG data              |
-| `GET`  | `/api/v1/esg/:tenantId`       | Get ESG data by tenant       |
-| `GET`  | `/api/v1/esg/:tenantId/pdf`   | Download ESG report as PDF   |
-| `GET`  | `/api/v1/esg/:tenantId/excel` | Download ESG report as Excel |
-| `GET`  | `/api/v1/mapping`             | Get ESG → SDG mapping data   |
-
-
-📊 Dashboards
-Power BI
-
-Embed HTML file in dashboard/power-bi/index.html
-
-Set report ID, embed URL, and access token from .env
-
-Grafana
-
-Use .json dashboards inside dashboard/grafana-config/
-
-Configure Grafana to use MongoDB or InfluxDB (via proxy if needed)
-
-
-📦 Sample ESG Mapping File
 
 {
-  "digital_documents": {
-    "esg_category": "Environmental",
-    "sdg_goals": [12, 13]
-  },
-  "employee_training": {
-    "esg_category": "Social",
-    "sdg_goals": [4, 5]
-  },
-  "audit_compliance": {
-    "esg_category": "Governance",
-    "sdg_goals": [16]
-  }
+  "wallet": "google",
+  "receiptId": "12345",
+  "userId": "user001"
 }
 
-📄 License
-This project is licensed under the MIT License.
 
-👨‍💻 Author
+Success Response:
+
+
+{
+  "message": "google wallet sync successful",
+  "result": {
+    "status": "Google Wallet sync done"
+  }
+
+
+  📦 Simulated Wallets
+Google Wallet (console logs payload)
+
+Apple Wallet (mock service)
+
+UPI Wallet (Paytm/PhonePe like simulation)
+
+👩‍💻 Author
 Sumit Kumar
-[Terra Grid Tech] @Intern

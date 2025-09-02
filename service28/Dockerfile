@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Start service
-CMD ["npm", "start"]
+CMD ["node", "app.js"]

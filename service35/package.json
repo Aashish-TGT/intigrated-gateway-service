@@ -1,34 +1,10 @@
 {
-  "name": "ms39-identity-service",
-  "version": "1.0.0",
-  "description": "Microservice for managing identity information linked to receipts",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "lint": "eslint .",
-    "prettify": "prettier --write ."
-  },
-  "keywords": [
-    "identity",
-    "microservice",
-    "sequelize",
-    "mysql",
-    "express"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "mysql2": "^3.3.4",
-    "sequelize": "^6.32.1"
-  },
-  "devDependencies": {
-    "eslint": "^8.45.0",
-    "nodemon": "^3.0.1",
-    "prettier": "^3.0.0"
+    "axios": "^1.10.0",
+    "axois": "^0.0.1-security",
+    "express": "^5.1.0",
+    "fs-extra": "^11.3.0",
+    "puppeteer": "^24.14.0",
+    "qrcode": "^1.5.4"
   }
 }

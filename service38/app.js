@@ -1,20 +1,29 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const mappingRoutes = require("./routes/mappingRoutes");
-const esgRoutes = require("./routes/esgRoutes");
-const connectDB = require("./utils/db");
-const cors = require("cors");
+// app.js
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const walletRoutes = require('./routes/walletRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
-dotenv.config();
 const app = express();
-connectDB();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use("/api/v1/mapping", mappingRoutes);
-app.use("/api/v1/esg", esgRoutes);
 
+// Routes
+app.use('/api/wallet', walletRoutes);
+
+// Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', service: 'Digital Wallet Connector' });
+});
+
+// Error Handling
+app.use(errorHandler);
+
+// Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Digital Wallet Connector Service running on port ${PORT}`);
 });

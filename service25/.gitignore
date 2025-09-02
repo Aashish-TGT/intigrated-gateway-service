@@ -1,13 +1,32 @@
-# Node modules (don't push this folder)
+# Node modules
 node_modules/
 
-# dotenv file (contains secrets like DB URI)
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables
 .env
 
-# Logs
-logs
-*.log
-
-# IDE config
+# Editor folders
 .vscode/
-.DS_Store
+.idea/
+
+# Build output
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Misc
+*.pid
+*.seed

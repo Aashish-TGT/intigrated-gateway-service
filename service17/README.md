@@ -1,110 +1,51 @@
-# data-lifecycle-service
-This microservice is responsible for managing the data lifecycle of client receipts stored in Azure Blob Storage
-# 📦 Microservice 21: Data Lifecycle Management Service
+# 📄 File Optimization Service
 
-This microservice is responsible for managing the **data lifecycle** of client receipts stored in **Azure Blob Storage**. It performs daily scans to **auto-archive or delete files** based on each client’s retention policy. It also sends **email alerts before deletion** using a mock or real email service.
-
----
+A lightweight Node.js microservice to **compress and optimize PDF files** using Ghostscript.
 
 ## 🚀 Features
+- Upload and compress PDFs
+- Ghostscript integration
+- Returns optimized PDF
 
-- ✅ Daily scan of receipts using a cron job
-- ✅ Retention policies per client (days + action: `delete` or `archive`)
-- ✅ Auto-delete or archive files from Azure Blob Storage
-- ✅ Sends email alerts before deletion (via Gmail or Ethereal)
-- ✅ RESTful API for managing policies and manual archiving
+## 📦 Tech Stack
+- Node.js
+- Express
+- Multer
+- Ghostscript
 
----
+## 📂 Folder Structure
 
-## 🧰 Tech Stack
-
-- **Node.js**
-- **Express.js**
-- **PostgreSQL**
-- **Azure Blob Storage SDK**
-- **Node-Cron**
-- **Nodemailer (Gmail or Ethereal for testing)**
-
----
-
-## 📁 Folder Structure
-data-lifecycle-service/
+file-optimization-service/
+├── app.js # Main entry point of the Express app
+├── README.md # Project documentation (this file)
+├── LICENSE # Open-source license (MIT)
+├── .gitignore # Files/folders to ignore in Git (e.g. node_modules)
 │
-├── config/
-│   └── db.js
-│   └── azureBlob.js
+├── controllers/ # Route logic handlers
+│ └── optimizeController.js # Logic for compressing PDF using Ghostscript
 │
-├── controllers/
-│   └── policyController.js
-│   └── lifecycleController.js
+├── middleware/ # Custom Express middlewares
+│ └── upload.js # Multer config for handling PDF file uploads
 │
-├── services/
-│   └── cronJob.js
-│   └── emailService.js
-│   └── policyService.js
+├── routes/ # Route definitions
+│ └── optimizeRoutes.js # Defines /api/optimize endpoint
 │
-├── models/
-│   └── RetentionPolicy.js
+├── utils/ # Helper functions/utilities
+│ └── ghostscript.js # Logic to run Ghostscript compression via child_process
 │
-├── routes/
-│   └── policyRoutes.js
-│   └── lifecycleRoutes.js
-│
-├── .env
-├── app.js
-└── package.json
-## ⚙️ Environment Variables (`.env`)
+├── uploads/ # 📥 Uploaded raw PDF files (ignored in Git)
+├── optimized/ # 📤 Compressed PDF output files (ignored in Git)
+└── node_modules/ # Installed dependencies (ignored in Git)
 
-```env
-DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/lifecycle_db
-AZURE_STORAGE_CONNECTION_STRING=your-azure-blob-connection-string
-EMAIL_USER=youremail@gmail.com
-EMAIL_PASS=your-16-char-app-password
-PORT=4000
-✅ Use Gmail App Passwords for testing emails.
 
-🧪 API Endpoints
-Method		  Endpoint			          Description
-POST			  /api/set-policy			    Set or update retention policy
-GET			    /api/check-expiring		  Fetch all active retention policies
-DELETE			/api/archive/:receiptId	Manually archive a receipt by ID
-
-🕒 Cron Job Behavior
-Runs every day at 1:00 AM
-Scans files in each client’s Azure container
-If file age ≥ retention policy:
-Sends an email alert
-Then performs delete or archive action
-
-🧾 Database Schema (PostgreSQL)
-sql
-CREATE TABLE retention_policies (
-  client_id VARCHAR PRIMARY KEY,
-  days INT NOT NULL,
-  action VARCHAR(10) CHECK (action IN ('delete', 'archive')) NOT NULL
-);
-🛠️ Running the Service Locally
-Clone the repo:
-git clone https://github.com/ Komal-TGT /data-lifecycle-service.git
-cd data-lifecycle-service
-
-Install dependencies:
+## ⚙️ How to Run
+```bash
 npm install
-Configure .env file
-Run PostgreSQL and create the lifecycle_db + table
-
-Start the server:
 node app.js
-✅ For testing cron: change schedule to every minute in cronJob.js
-cron.schedule("*/1 * * * *", scanAndHandleReceipts)
+📮 API Endpoint
+POST /api/optimize
 
-📤 Email Testing
-Use Gmail with app password for real email alerts
-Check terminal for email preview link if using Ethereal
+Form-data key: pdf
 
-📫 Contact
-For questions or support, email: komal41003@gmail.com
-🙋‍♂️ Made By KOMAL RANI
-🔗 GitHub: github.com/Komal-TGT
-
-
+👤 Developer Name
+    Manish Kumari-TGT

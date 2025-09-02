@@ -1,18 +1,35 @@
-# Node modules
-node_modules/
+# Node dependencies
+/node_modules
+
+# Environment variables
+.env
 
 # Logs
 logs
 *.log
 npm-debug.log*
 
-# dotenv environment variable file
-.env
-
-# Exported files
-exports/*.csv
-exports/*.pdf
-
-# OS-specific files
+# IDE/editor settings
+.vscode/
+.idea/
 .DS_Store
+
+# System files
 Thumbs.db
+
+# OS-specific
+*.swp
+*.swo
+
+# Coverage reports
+coverage/
+
+# Optional: PM2 logs or runtime files
+pids
+*.pid
+*.seed
+
+# Optional: if Docker used
+docker-compose.override.yml
+
+

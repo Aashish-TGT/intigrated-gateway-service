@@ -1,67 +1,79 @@
-# Receipt Template Customization UI Service
+# 🧾 Receipt Add-on Offer Engine
 
-## Overview
-The Receipt Template Customization UI Service is a front-end web tool designed for POS companies to visually create, preview, and save customized receipt templates. Users can personalize their templates with branding, layout, and content preferences.
+A smart microservice that dynamically attaches promotional offers (coupons, banners, CTAs) to receipts based on time, location, and merchant. Perfect for improving customer engagement and marketing personalization.
 
-## Tech Stack
-- **Frontend**: React / Next.js
-- **Backend**: Node.js + MongoDB (linked with Template Management Service)
-- **Optional**: TailwindCSS for UI, PDFKit/HTML2PDF for preview
+---
 
-## Key Features
-- Upload POS logo (PNG, SVG)
-- Choose primary/secondary colors
-- Select fonts and text alignment
-- Add legal notes, footer, offers
-- Live preview with sample data
-- Save, edit, duplicate templates
-- Assign template to POS brand or outlet
+## 🚀 Key Features
 
-## API Endpoints
-- `POST /template-builder/upload-logo`: Upload a logo for the receipt template.
-- `POST /template-builder/save`: Save the customized receipt template.
-- `GET /template-builder/:templateId`: Fetch a specific receipt template by ID.
-- `POST /template-builder/assign/:brandId`: Assign a saved template to a specific POS brand or outlet.
+- 🕐 **Time-based offers** – Show offers within specific date/time range
+- 🌍 **Location-aware** – Deliver offers based on user's location
+- 🛍️ **Merchant customization** – Attach per-merchant offers to receipts
+- 👀 **Offer display on receipt** – Rendered via EJS templates
+- 🖱️ **Click tracking** – Log offer clicks and redirect to CTA URLs
 
-## Getting Started
 
-### Prerequisites
-- Node.js (version 14 or higher)
-- npm (version 6 or higher)
+## 🛠️ Tech Stack
 
-### Installation
-1. Clone the repository:
-   ```
-   git clone https://github.com/your-repo/receipt-template-customization-ui.git
-   ```
-2. Navigate to the project directory:
-   ```
-   cd receipt-template-customization-ui
-   ```
-3. Install the dependencies:
-   ```
-   npm install
-   ```
+- **Node.js** + **Express.js**
+- **MongoDB** + **Mongoose**
+- **EJS** – Template engine for rendering receipts with offers
+- **Postman** – API testing
+- **JavaScript (ES6+)**
 
-### Running the Application
-To start the development server, run:
-```
-npm run dev
-```
-The application will be available at `http://localhost:3000`.
 
-### Building for Production
-To build the application for production, run:
-```
-npm run build
-```
-Then, start the production server with:
-```
-npm start
-```
+## 📁 Folder Structure
 
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
+receipt-offer-engine/
+├── controllers/ # Business logic for offers
+│ └── offerController.js
+├── models/ # Mongoose schema for Offer
+│ └── offerModel.js
+├── routes/ # Express route handlers
+│ └── offerRoutes.js
+├── views/ # EJS template for receipt view
+│ └── receipt.ejs
+├── app.js # Entry point
+├── package.json
+├── .gitignore
+├── .env # MongoDB URI and environment configs
+└── README.md # This file
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+## 🔌 API Endpoints
+
+### ✅ `POST /offer/attach`
+Attach a new offer to a receipt.
+
+```json
+{
+  "receiptId": "RCP1005",
+  "merchantId": "MYSHOP",
+  "location": "Delhi",
+  "showTimeRange": {
+    "start": "2025-07-16T09:00:00Z",
+    "end": "2025-07-31T23:59:59Z"
+  },
+  "bannerText": "🔥 Flat ₹200 OFF! Only Today!",
+  "ctaLink": "https://www.flipkart.com/offers-store"
+}
+
+✅ GET /offer/:receiptId
+Render the receipt page and display offer if valid.
+
+Example: http://localhost:3000/offer/RCP1005
+
+Rendered via EJS with offer banner and "Claim Offer" button
+
+
+✅ POST /offer/click/:receiptId
+Tracks click on "Claim Offer" button and redirects user to offer CTA link.
+
+
+📄 License
+This project is licensed under the MIT License – free to use, modify, and distribute.
+
+
+✨ Author
+Manish Kumari

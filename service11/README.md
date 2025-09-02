@@ -1,100 +1,100 @@
-# 🩺 Health & Monitoring Service
+# 🧩 Template Management Service
 
-This service monitors the health of microservices by exposing a heartbeat API and visualizing metrics using Prometheus and Grafana. Ideal for DevOps teams to track uptime, memory usage, and CPU load in real-time.
-
----
-
-## 📌 Purpose
-
-- Tracks **uptime**, **memory usage**, and **error rates** of services
-- Helps detect outages early through **alert triggers**
-- Provides a **dashboard view** of system performance
+A microservice to manage custom receipt templates with dynamic fields, white-label branding, and secure rendering — built using **Node.js + EJS**.
 
 ---
 
-## 🧰 Tech Stack
+## 🚀 Features
 
-- **Node.js** – for exposing `/health` endpoint
-- **Prometheus** – for metrics scraping and storage
-- **Grafana** – for visual dashboards and alerting
-- **Docker Compose** – to manage services
-- **Azure Monitor (optional)** – for production-level alerting
+- 📤 Upload custom `.ejs` HTML templates
+- 🔍 Render with dynamic data (preview support)
+- ⚙️ Secure sandboxed rendering using `sanitize-html`
+- 🧾 White-label and POS region-based localization support
+- 🌐 REST API with Postman-friendly endpoints
 
 ---
 
-## 🗂️ Project Structure
+## 🛠 Tech Stack
 
-health-src/
-├── health-monitoring/
-│   └── server.js
-├── prometheus.yml
-├── docker-compose.yml
-├── README.md
-├── LICENSE
+- Node.js
+- Express.js
+- EJS (HTML Template Engine)
+- Multer (for file uploads)
+- Morgan (request logger)
+- Sanitize-HTML (sandboxing)
+
+---
+
+## 📁 Folder Structure
+
+
+template-management-service/
+├── controllers/
+├── routes/
+├── templates/
+├── uploads/
+├── utils/
+├── views/
+├── server.js
+├── package.json
 └── .gitignore
 
-
-
+# 🧩 API Endpoints
 
 ---
 
-## ⚙️ Setup Instructions
+### ✅ POST `/templates/upload`
 
-### 1️⃣ Run Node.js Health Service
+Upload a new EJS/HTML template file to the server.
+
+```form-data
+Key:    template
+Type:   File
+Value:  sampleReceipt.ejs
+
+
+
+GET /templates/list
+Returns a list of all uploaded template files.
+
+🧾 Example Response:
+
+{
+  "templates": [
+    "1721058800123-sampleReceipt.ejs",
+    "1721060002345-brandReceipt.ejs"
+  ]
+}
+✅ GET /templates/preview/:filename
+Render the receipt with sample dynamic data.
+
+🌐 Example:
+http://localhost:3000/templates/preview/1721058800123-sampleReceipt.ejs
+
+🖥️ Renders the file using EJS with:
+
+customerName, orderId, amount, region, date
+
+Embedded values and white-label support
+
+
+
+📃 License
+This project is licensed under the MIT License – free to use, modify, and distribute.
+
+
+
+✍️ Author
+Minakshi Saini
+
+
+
+## 🚀 How to Use
+
+1. Save the above content as `README.md` in your root folder.
+2. Then run the following commands:
 
 ```bash
-cd health-monitoring
-npm init -y
-npm install express
-node server.js
-
-Access it at: http://localhost:3000/health
-
-2️⃣ Start Prometheus + Grafana via Docker
-cd ..
-docker-compose up -d
-
-Prometheus: http://localhost:9090
-
-Grafana: http://localhost:3000
-Default login: admin / admin123
-
-
-📊 Configure Grafana
-1. Go to Settings > Data Sources
-
-2. Add Prometheus:
-http://prometheus:9090
-
-3. Create dashboard panels with queries like:
-
-up
-
-process_resident_memory_bytes
-
-process_cpu_seconds_total
-
-🚨 Optional: Azure Monitor Alerts (for production)
-In Azure:
-
-Go to Monitor > Alerts > Create Alert Rule
-
-Select your App Service or VM
-
-Set condition: e.g., memory > 400 MB
-
-Set action: email/SMS/webhook
-
-
-👨‍💻 Author
-  **Sumit**
- Terragrid Tech
-
-
-
-
-
-
-
-
-
+git add README.md
+git commit -m "Added compact README with template API docs"
+git push

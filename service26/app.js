@@ -1,11 +1,23 @@
+require('dotenv').config(); // Load environment variables from .env
+
 const express = require('express');
-const dotenv = require('dotenv');
-const importRoutes = require('./routes/import.routes');
+const verifyRoutes = require('./routes/verify');
+const { saveReceipt } = require('./models/receiptStore');
 
-dotenv.config();
 const app = express();
-app.use(express.json());
-app.use('/upload', importRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`MS30 running on port ${PORT}`));
+// Middleware to parse JSON
+app.use(express.json());
+
+// API routes
+app.use('/verify', verifyRoutes);
+
+// 🔄 Temporary: Save 1 test receipt for verification
+// receiptId = "12345", data = "sample receipt data"
+saveReceipt("12345", "sample receipt data");
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Receipt Verification Service running on port ${PORT}`);
+});

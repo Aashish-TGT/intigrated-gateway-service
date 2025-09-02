@@ -1,5 +1,5 @@
 {
-  "name": "microservices-34",
+  "name": "ms30-migration-servics",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.10.0",
+    "csv-parser": "^3.2.0",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
-    "mongoose": "^8.16.4"
+    "fast-xml-parser": "^4.5.3",
+    "multer": "^2.0.2"
   }
 }

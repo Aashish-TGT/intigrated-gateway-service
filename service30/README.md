@@ -1,67 +1,114 @@
- Dynamic Receipt Context Engine
+# 🧾 MS30 – Migration & Import Service
 
-This microservice dynamically selects and returns the appropriate receipt template based on input metadata like brand, outlet, language, type, etc
+This microservice helps clients import their old receipt data (CSV, XML, etc.) into the POS system. It parses uploaded files, maps them to the internal receipt format, and performs bulk uploads.
 
-📁 File Structure 
+---
 
-├── controllers/                    # 🎮 Contains the controller that handles request logic
-│   └── contextController.js        # 👉 Logic to resolve the dynamic receipt context (template)
+## 📦 Tech Stack
 
-├── models/                         # 🧠 Contains the Mongoose schema (MongoDB structure)
-│   └── ContextRule.js              # 👉 Schema for storing brand, outlet, type, language, etc.
+- **Node.js**
+- **Express.js**
+- **Multer** (File upload)
+- **Fast-XML-Parser** (XML parsing)
+- **CSV-Parser** (CSV parsing)
+- **MySQL / Sequelize** (Optional for DB storage)
 
-├── routes/                         # 🌐 All the REST API route definitions
-│   └── contextRoutes.js            # 👉 Route for POST /api/context/resolve
+---
 
-├── services/                       # 💼 Business logic layer (separates DB queries from controllers)
-│   └── contextService.js           # 👉 Service to query MongoDB for matching rule/template
+## 🚀 Features
 
-├── node_modules/                   # 📦 Auto-generated folder containing all project dependencies
+- Upload old receipt files (CSV, XML)
+- Parse and validate data
+- Convert data to internal format
+- Bulk insert into system
+- Report of successes & failures
 
-├── .gitignore                      # 🚫 Tells Git which files/folders to ignore (like node_modules)
+---
 
-├── LICENSE                         # 📜 License file (MIT License, open-source usage permission)
+## 📁 File Structure
 
-├── package.json                    # 📦 Project metadata, scripts, and dependencies
+MS30-MIGRATION-SERVICES/
+├── controllers/
+│ ├── import.controller.js
+│ └── upload.controller.js
+├── routes/
+│ ├── import.routes.js
+│ └── upload.route.js
+├── utils/
+│ └── parser.js
+├── uploads/
+│ └── [Uploaded files temporarily saved here]
+├── sample-receipt.xml
+├── app.js
+├── package.json
+├── package-lock.json
+└── README.md
 
-├── package-lock.json              # 🔒 Locked versions of dependencies (auto-generated)
+---
 
-├── README.md                       # 📘 Project overview, setup instructions, API docs
+## 🔗 API Endpoints
 
-📁 Step 2: Install Dependencies
+### 1. `POST /upload`
 
-npm install
+**Description:** Upload a CSV or XML file for import.
 
+- **Form Field Name:** `file`
+- **File Types Supported:** `.csv`, `.xml`
 
-⚙️ Tech Stack
-Node.js
-
-Express.js
-
-MongoDB
-
-Mongoose
-
-Postman (for testing)
-
-
-📡 API Endpoint
-POST /api/context/resolve
-Request Body:
-
+**Response:**
+```json
 {
-  "brand": "Zomato",
-  "outlet": "Delhi1",
-  "type": "invoice",
-  "language": "en"
-}
-Response:
-
-
-{
-  "templateId": "tpl_zomato_invoice_v2",
-  "version": 2
+  "successCount": 10,
+  "failedCount": 2,
+  "errors": [
+    { "row": 5, "reason": "Missing receipt ID" }
+  ]
 }
 
-👩‍💻 Author
-Created by Manish Kumari 
+2. GET /import/status
+Description: Get import history or status (optional).
+
+🧪 Postman Testing Steps
+Open Postman
+
+Select POST /upload endpoint
+
+Under Body > form-data, set:
+
+key = file, type = File, and choose a .csv or .xml file
+
+Send request
+
+Check parsed response and import result
+
+⚠️ Known Errors & Fixes
+parser.validate is not a function: Ensure correct usage of fast-xml-parser. Use:
+
+const parser = new XMLParser();
+const result = parser.parse(xmlData);
+
+
+📄 Sample XML Format
+<receipts>
+  <receipt>
+    <id>123</id>
+    <date>2024-10-01</date>
+    <amount>999.99</amount>
+    <clientId>abc123</clientId>
+  </receipt>
+</receipts>
+
+
+📄 Sample CSV Format
+id,date,amount,clientId
+123,2024-10-01,999.99,abc123
+124,2024-10-02,499.50,xyz456
+
+
+📜 License
+MIT License
+© 2025 Aashish Dev
+
+Developer – Aashish
+MS30 Microservice
+intern in Tgt's

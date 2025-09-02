@@ -1,139 +1,129 @@
-# 🛡️ Audit & Compliance Service
+# 📊 Analytics & Logging Service
 
-A microservice that captures and stores user actions for legal and regulatory compliance using **Kafka**, **Azure CosmosDB**, and **Node.js**. It supports **GDPR-compliant logs**, **timestamped audit trails**, and **exportable reports** in CSV and PDF format.
+This is a Node.js-based microservice used in a Point of Sale (POS) system to capture logs and performance metrics. It stores structured logs in **Azure Cosmos DB** and sends event tracking data to **Azure Application Insights**. This helps monitor activities like receipt generation, scan events, and performance audits across other microservices.
 
----
 
-## 📌 Features
+## 🚀 Tech Stack
 
-- ✅ GDPR-compliant immutable audit logs
-- 🕓 Timestamped user actions
-- 📁 Export data as CSV or PDF
-- 🔍 Filter audit logs by `userId`
-- ⚙️ Built on Kafka + CosmosDB + Express.js
+- **Backend**: Node.js + Express.js
+- **Logging**: Azure Application Insights
+- **Database**: Azure Cosmos DB
+- **Environment Config**: dotenv for environment variables
+- **Dev Tools**: nodemon for development reload
 
----
 
-## 🔧 Tech Stack
 
-| Tool         | Use                          |
-|--------------|-------------------------------|
-| Kafka        | Event streaming               |
-| CosmosDB     | Document database             |
-| Express.js   | REST API                      |
-| json2csv     | CSV export                    |
-| pdfkit       | PDF generation                |
-| dotenv       | Environment configuration     |
+## 📁 Project Structure
 
----
+analytics-service/
+│
+├── routes/
+│ └── logRoutes.js # API route for logging events
+│
+├── logController.js # Controller to process and store logs
+├── cosmosClient.js # Cosmos DB client config
+├── insights.js # Application Insights setup
+│
+├── .env # Environment variables (App Insights & Cosmos)
+├── app.js # Entry point of the application
+├── package.json # Project metadata and dependencies
+└── README.md # Project documentation (this file)
 
-## 📂 Project Structure
-
-```
-audit-compliance/
-├── kafka/             # Kafka producer and consumer
-├── cosmos/            # Cosmos DB client
-├── routes/            # Express API routes
-├── exports/           # CSV and PDF export functions
-├── .env               # Environment variables
-├── server.js          # Entry point
-└── package.json
-```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. 📥 Clone the repository
-
-```bash
-git clone https://github.com/your-username/audit-compliance.git
-cd audit-compliance
-```
-
-### 2. 📦 Install dependencies
-
-```bash
-npm install
-```
-
-### 3. 🛠️ Configure environment
-
-Create a `.env` file:
+## 🔐 Environment Variables (.env)
 
 ```env
-KAFKA_BROKER=localhost:9092
-COSMOS_ENDPOINT=your_cosmosdb_url
-COSMOS_KEY=your_cosmosdb_key
-COSMOS_DATABASE=AuditDB
-COSMOS_CONTAINER=Events
+INSTRUMENTATION_KEY=your_app_insights_key
+COSMOS_ENDPOINT=https://your-cosmos.documents.azure.com:443/
+COSMOS_KEY=your_cosmos_key
+COSMOS_DATABASE=analyticsdb
+COSMOS_CONTAINER=logs
+PORT=3000
+
+
+# Step 1: Clone the project
 ```
+git clone <your-repo-url>
+cd analytics-service
 
-### 4. 🚀 Start the service
+# Step 2: Install dependencies
+npm install
 
-```bash
-npm start
-```
+# Step 3: Add your .env file with required values
 
-Kafka consumer will start and REST APIs will be available on **http://localhost:3000**.
+# Step 4: Start the service
+npm run dev     # Development mode
+npm start       # Production
 
----
 
-## 📡 API Endpoints
+Configure environment variables:
+Create a .env file using the variables above with values from your Azure Portal.
 
-### `GET /audit/events`
+Ensure your Cosmos DB and App Insights are already set up in Azure:
 
-**Query Params:**
-- `userId` (optional): Filter by user
-- `exportType` (optional): `csv` or `pdf`
+Go to Azure → Create Cosmos DB & Application Insights → Copy keys to .env
 
-**Examples:**
+Run the app:
 
-- Fetch all logs:
-  ```
-  GET /audit/events
-  ```
+npm run dev     # for development (with nodemon)
+npm start       # for production
 
-- Filter by user:
-  ```
-  GET /audit/events?userId=123
-  ```
+📡 API Endpoint
 
-- Export as CSV:
-  ```
-  GET /audit/events?exportType=csv
-  ```
+POST /api/log
+Stores an event in Cosmos DB and logs it to Application Insights.
 
-- Export as PDF:
-  ```
-  GET /audit/events?exportType=pdf
-  ```
+Example Request:
+```json
+{
+  "event": "user_signup",
+  "timestamp": "2025-07-29T10:30:00Z",
+  "userId": "user_abc",
+  "platform": "web"
+}
 
----
+Success Response:
+```json
+{
+  "message": "Log stored successfully",
+  "id": "auto-generated-id"
+}
 
-## 📤 Sending Audit Events
+🧪 Testing with Postman
+✅ Endpoint Details
+| Method | URL                             | Description                     |
+| ------ | ------------------------------- | ------------------------------- |
+| POST   | `http://localhost:3000/api/log` | Submit a log event for tracking |
 
-Use the Kafka producer (`producer.js`) to emit events:
 
-```js
-sendAuditEvent({
-  userId: "123",
-  action: "LOGIN",
-  description: "User logged in"
-});
-```
 
-Each event is automatically timestamped and stored in CosmosDB.
+✨ Features
+✅ Central logging from microservices
 
----
+🚀 Cosmos DB for persistent JSON-based logs
 
-## 📃 License
+📈 Real-time telemetry to Azure App Insights
 
-MIT License
+🔧 Ready for scaling/log filtering
 
----
 
-## 🙋‍♂️ Author
 
-Made with ❤️ by **Sumit**  
-Intern at Tera Grid Tech | Node.js | Kafka | CosmosDB
+Future Enhancements (Suggestions)
+Add log filters by date/client/event type
+
+Create log retrieval endpoints (GET)
+
+Add email alerts for critical exceptions
+
+Connect to Power BI dashboards for real-time insights
+
+Store logs in cold/archival tier after 30 days
+
+👨‍💻 Author
+    Sumit Kumar
+Intern @ TGT (TeraGrid Tech)
+
+
+
+## 📄 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more info.
